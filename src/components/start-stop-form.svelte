@@ -83,7 +83,7 @@
 				}}
 				id="start-location"
 				type="text"
-				placeholder="Enter a start location"
+				placeholder="Choose pickup location"
 				class="w-full text-sm p-2 border border-black rounded"
 			/>
 			{#if start}
@@ -105,7 +105,7 @@
 				}}
 				id="end-location"
 				type="text"
-				placeholder="Enter an end location"
+				placeholder="Choose the destination"
 				class="w-full text-sm p-2 border border-black rounded"
 			/>
 			{#if end}
