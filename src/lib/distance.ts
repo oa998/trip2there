@@ -1,3 +1,4 @@
+import { env } from '$env/dynamic/public';
 export interface DistElement {
 	distance: Distance;
 	duration: Duration;
@@ -21,7 +22,7 @@ export interface Price {
 }
 
 export async function dist(start: string, end: string): Promise<DistElement[]> {
-	const s = encodeURI(`http://localhost:3000/gcp-apis/distance?end=${end}&start=${start}`);
+	const s = encodeURI(`${env.PUBLIC_SERVER_URL}/gcp-apis/distance?end=${end}&start=${start}`);
 	return fetch(s).then(async (r) => {
 		const json = await r.json();
 		if (!/^200$/.test('' + r.status)) {
