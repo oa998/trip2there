@@ -105,17 +105,21 @@
 		@apply focus:outline-blue-950;
 	}
 	.schedule-ride {
-		transition: box-shadow ease-in 500ms;
+		transition: box-shadow ease-in 350ms;
 		@apply disabled:bg-slate-400 disabled:text-gray-700 disabled:cursor-not-allowed text-black p-2 rounded shadow-none;
 	}
 	.schedule-ride:not(:disabled) {
 		@apply border border-gray-300;
 	}
 	.submit-ride {
-		transition: box-shadow ease-in 500ms;
+		transition: box-shadow ease-in 350ms;
 		@apply disabled:bg-slate-400 disabled:text-gray-700 disabled:cursor-not-allowed bg-violet-700 text-white p-2 rounded shadow-none;
 	}
 	.route-selected {
 		@apply shadow-gray-500 shadow-lg;
+	}
+	button:active {
+		transition: box-shadow linear 100ms;
+		@apply shadow-sm;
 	}
 </style>
