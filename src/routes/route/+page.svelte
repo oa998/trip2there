@@ -5,26 +5,27 @@
 	import Icon from '@iconify/svelte';
 	let routeSelected = false;
 	let requestButton: HTMLButtonElement;
+	let loadingDistance = false;
 	let distance: DistElement[] = [
-		{
-			distance: {
-				text: '8.5 mi',
-				value: 13655
-			},
-			duration: {
-				text: '19 mins',
-				value: 1112
-			},
-			price: {
-				text: '$12.50',
-				value: 12.5
-			},
-			status: 'OK'
-		}
+		// {
+		// 	distance: {
+		// 		text: '8.5 mi',
+		// 		value: 13655
+		// 	},
+		// 	duration: {
+		// 		text: '19 mins',
+		// 		value: 1112
+		// 	},
+		// 	price: {
+		// 		text: '$12.50',
+		// 		value: 12.5
+		// 	},
+		// 	status: 'OK'
+		// }
 	];
 </script>
 
-<div class="m-auto max-w-xs max-h-[600px]">
+<div class="m-auto w-full h-full sm:max-w-sm sm:border sm:border-black max-h-[700px]">
 	<div class="font-semibold py-3 bg-orange-300 text-2xl text-center">Request a ride</div>
 	<div class="p-2">
 		<StartStopForm
@@ -35,9 +36,11 @@
 				const { start, end } = x.detail;
 
 				if (routeSelected) {
+					loadingDistance = true;
 					dist(start, end)
 						.then((dist) => (distance = dist))
-						.catch(toastErrorCatch);
+						.catch(toastErrorCatch)
+						.then(() => (loadingDistance = false));
 					setTimeout(() => requestButton.focus());
 				} else {
 					distance = [];
@@ -46,6 +49,14 @@
 		/>
 		<br />
 		<div class="h-24 w-full">
+			{#if routeSelected && loadingDistance}
+				<div class="border border-black rounded p-2 bg-blue-100 h-full grid place-items-center">
+					<div class="flex flex-row gap-3">
+						<div>Calculating Trip</div>
+						<Icon icon="line-md:loading-loop" style="font-size:x-large" color="black" />
+					</div>
+				</div>
+			{/if}
 			{#if distance.length}
 				<div class="border border-black rounded p-2 bg-blue-200">
 					<div class="flex flex-row gap-2">
