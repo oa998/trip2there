@@ -90,11 +90,11 @@
 	}
 	.schedule-ride {
 		transition: box-shadow ease-in 500ms;
-		@apply disabled:bg-slate-400 disabled:text-gray-700 border border-black text-black p-2 rounded shadow-none;
+		@apply disabled:bg-slate-400 disabled:text-gray-700 disabled:cursor-not-allowed border border-black text-black p-2 rounded shadow-none;
 	}
 	.submit-ride {
 		transition: box-shadow ease-in 500ms;
-		@apply disabled:bg-slate-400 disabled:text-gray-700 bg-violet-700 text-white p-2 rounded shadow-none;
+		@apply disabled:bg-slate-400 disabled:text-gray-700 disabled:cursor-not-allowed bg-violet-700 text-white p-2 rounded shadow-none;
 	}
 	.route-selected {
 		@apply shadow-gray-500 shadow-lg;
