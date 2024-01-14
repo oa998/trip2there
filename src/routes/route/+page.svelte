@@ -23,6 +23,7 @@
 		// 	status: 'OK'
 		// }
 	];
+	$: ready = routeSelected && distance.length > 0;
 </script>
 
 <div class="m-auto w-full h-full sm:max-w-sm sm:border sm:border-black max-h-[700px]">
@@ -57,7 +58,7 @@
 					</div>
 				</div>
 			{/if}
-			{#if distance.length}
+			{#if ready}
 				<div class="border border-black rounded p-2 bg-blue-200">
 					<div class="flex flex-row gap-2">
 						<div class="font-semibold pl-2">Distance:</div>
@@ -78,8 +79,8 @@
 		<div class="flex flex-row justify-between w-full">
 			<button
 				bind:this={requestButton}
-				disabled={!routeSelected}
-				class:route-selected={routeSelected}
+				disabled={!ready}
+				class:route-selected={ready}
 				class="schedule-ride flex flex-row gap-2"
 			>
 				Schedule Ride
@@ -87,8 +88,8 @@
 			</button>
 			<button
 				bind:this={requestButton}
-				disabled={!routeSelected}
-				class:route-selected={routeSelected}
+				disabled={!ready}
+				class:route-selected={ready}
 				class="submit-ride"
 			>
 				Request Ride Now</button
