@@ -24,63 +24,65 @@
 	];
 </script>
 
-<div class="font-semibold py-3 bg-orange-300 text-2xl text-center">Request a ride</div>
-<div class="p-2">
-	<StartStopForm
-		on:start-address-found={(x) => console.log('start', { x })}
-		on:end-address-found={(x) => console.log('end', { x })}
-		on:route-selected={(x) => {
-			routeSelected = x.detail.ready;
-			const { start, end } = x.detail;
+<div class="m-auto max-w-xs max-h-[600px]">
+	<div class="font-semibold py-3 bg-orange-300 text-2xl text-center">Request a ride</div>
+	<div class="p-2">
+		<StartStopForm
+			on:start-address-found={(x) => console.log('start', { x })}
+			on:end-address-found={(x) => console.log('end', { x })}
+			on:route-selected={(x) => {
+				routeSelected = x.detail.ready;
+				const { start, end } = x.detail;
 
-			if (routeSelected) {
-				dist(start, end)
-					.then((dist) => (distance = dist))
-					.catch(toastErrorCatch);
-				setTimeout(() => requestButton.focus());
-			} else {
-				distance = [];
-			}
-		}}
-	/>
-	<br />
-	<div class="h-24 w-full">
-		{#if distance.length}
-			<div class="border border-black rounded p-2 bg-blue-200">
-				<div class="flex flex-row gap-2">
-					<div class="font-semibold pl-2">Distance:</div>
-					<div class="flex-auto">{distance[0].distance.text}</div>
+				if (routeSelected) {
+					dist(start, end)
+						.then((dist) => (distance = dist))
+						.catch(toastErrorCatch);
+					setTimeout(() => requestButton.focus());
+				} else {
+					distance = [];
+				}
+			}}
+		/>
+		<br />
+		<div class="h-24 w-full">
+			{#if distance.length}
+				<div class="border border-black rounded p-2 bg-blue-200">
+					<div class="flex flex-row gap-2">
+						<div class="font-semibold pl-2">Distance:</div>
+						<div class="flex-auto">{distance[0].distance.text}</div>
+					</div>
+					<div class="flex flex-row gap-2">
+						<div class="font-semibold pl-2">Time:</div>
+						<div>{distance[0].duration.text}</div>
+					</div>
+					<div class="flex flex-row gap-2">
+						<div class="font-semibold pl-2">Price:</div>
+						<div>{distance[0].price.text}</div>
+					</div>
 				</div>
-				<div class="flex flex-row gap-2">
-					<div class="font-semibold pl-2">Time:</div>
-					<div>{distance[0].duration.text}</div>
-				</div>
-				<div class="flex flex-row gap-2">
-					<div class="font-semibold pl-2">Price:</div>
-					<div>{distance[0].price.text}</div>
-				</div>
-			</div>
-		{/if}
-	</div>
-	<br />
-	<div class="flex flex-row justify-between w-full">
-		<button
-			bind:this={requestButton}
-			disabled={!routeSelected}
-			class:route-selected={routeSelected}
-			class="schedule-ride flex flex-row gap-2"
-		>
-			Schedule Ride
-			<Icon icon="raphael:future" style="font-size:x-large" />
-		</button>
-		<button
-			bind:this={requestButton}
-			disabled={!routeSelected}
-			class:route-selected={routeSelected}
-			class="submit-ride"
-		>
-			Request Ride Now</button
-		>
+			{/if}
+		</div>
+		<br />
+		<div class="flex flex-row justify-between w-full">
+			<button
+				bind:this={requestButton}
+				disabled={!routeSelected}
+				class:route-selected={routeSelected}
+				class="schedule-ride flex flex-row gap-2"
+			>
+				Schedule Ride
+				<Icon icon="raphael:future" style="font-size:x-large" />
+			</button>
+			<button
+				bind:this={requestButton}
+				disabled={!routeSelected}
+				class:route-selected={routeSelected}
+				class="submit-ride"
+			>
+				Request Ride Now</button
+			>
+		</div>
 	</div>
 </div>
 
