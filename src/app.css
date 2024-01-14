@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hide-scroll::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scroll {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+.p-family {
+	font-family: 'Hepta Slab Variable', serif;
+	font-weight: 200;
+}
+
+.h-family {
+	font-family: 'Josefin Sans', sans-serif;
+	@apply font-thin;
+}
