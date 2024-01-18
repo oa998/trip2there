@@ -12,12 +12,17 @@
 	scrollbar-width: none; /* Firefox */
 }
 
-.p-family {
-	font-family: 'Hepta Slab Variable', serif;
-	font-weight: 200;
+.button {
+	transition: box-shadow ease-in 75ms;
+	@apply rounded-full py-2 w-[45%] disabled:bg-slate-400 disabled:text-gray-700 disabled:cursor-not-allowed text-black p-2 shadow-none;
 }
-
-.h-family {
-	font-family: 'Josefin Sans', sans-serif;
-	@apply font-thin;
+.primary {
+	@apply bg-violet-600 text-white;
+}
+.secondary {
+	@apply border border-black text-black;
+}
+.button:active {
+	/* transition: box-shadow linear 100ms; */
+	@apply shadow-sm;
 }
