@@ -9,7 +9,7 @@
 		body.password = data.get('password') as string;
 		const jwtDuration = 1;
 
-		const response = await fetch(`http://localhost:3000/auth/login?jwtDuration=${jwtDuration}`, {
+		const response = await fetch(`/data/auth/login?jwtDuration=${jwtDuration}`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
