@@ -7,7 +7,7 @@
 	<div class="text-center">
 		<div class="title">Rides 2U</div>
 		<div class="subtitle">We'll get you there</div>
-		<img src="/car.webp" alt="car" class="masked translate-up" />
+		<img src={`${base}/car.webp`} alt="car" class="masked translate-up" />
 
 		<div class="flex flex-row justify-around translate-up">
 			<a href={`${base}/signup`} class="button secondary"> Create Account </a>
