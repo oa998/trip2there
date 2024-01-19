@@ -3,6 +3,7 @@
 	import { dist, type DistElement } from '$lib/distance';
 	import { toastErrorCatch } from '$lib/toast';
 	import Icon from '@iconify/svelte';
+	import Loading from './../../../components/loading.svelte';
 	let routeSelected = false;
 	let requestButton: HTMLButtonElement;
 	let loadingDistance = false;
@@ -51,10 +52,7 @@
 	<div class="h-24 w-full">
 		{#if routeSelected && loadingDistance}
 			<div class="border border-black rounded p-2 bg-blue-100 h-full grid place-items-center">
-				<div class="flex flex-row gap-3">
-					<div>Calculating Trip</div>
-					<Icon icon="line-md:loading-loop" style="font-size:x-large" color="black" />
-				</div>
+				<Loading text={`Calculating Trip`} />
 			</div>
 		{/if}
 		{#if ready}

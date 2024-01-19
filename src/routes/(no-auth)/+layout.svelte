@@ -2,7 +2,7 @@
 	import '@fontsource-variable/hepta-slab';
 	import '@fontsource-variable/quicksand';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import '../app.css';
+	import '../../app.css';
 </script>
 
 <div class="w-full h-full grid place-items-center">

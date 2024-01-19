@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import Center from '$components/center.svelte';
 </script>
 
-<div class="grid place-items-center h-full relative">
+<Center>
 	<div class="text-center">
 		<div class="title">Rides 2U</div>
 		<div class="subtitle">We'll get you there</div>
@@ -13,7 +14,7 @@
 			<a href={`${base}/login`} class="button primary"> Log In </a>
 		</div>
 	</div>
-</div>
+</Center>
 
 <style lang="postcss">
 	.title {
@@ -21,14 +22,5 @@
 	}
 	.subtitle {
 		@apply text-lg relative z-10;
-	}
-	.translate-up {
-		transform: translateY(-100px);
-	}
-
-	.masked {
-		position: relative;
-		-webkit-mask-image: linear-gradient(transparent, black 20%, black 80%, transparent);
-		mask-image: linear-gradient (transparent, black 20%, black 80%, transparent);
 	}
 </style>
