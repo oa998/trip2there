@@ -4,6 +4,7 @@
 	import { toastErrorCatch } from '$lib/toast';
 	import Icon from '@iconify/svelte';
 	import Loading from './../../../components/loading.svelte';
+	import { signout, signoutAndHome } from './../../../lib/auth.ts';
 	let routeSelected = false;
 	let requestButton: HTMLButtonElement;
 	let loadingDistance = false;
@@ -94,6 +95,13 @@
 			Request Ride Now</button
 		>
 	</div>
+</div>
+<div class="flex flex-row w-full justify-between absolute bottom-1">
+	<button on:click={() => signout()} class="bg-red-300 rounded-full px-3"> (DEMO) Log Out</button>
+
+	<button on:click={() => signoutAndHome()} class="bg-red-300 rounded-full px-3">
+		(DEMO) Log Out and redirect</button
+	>
 </div>
 
 <!-- </div> -->
