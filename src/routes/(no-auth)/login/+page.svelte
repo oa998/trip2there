@@ -29,7 +29,6 @@
 </script>
 
 <Center>
-	<!-- action="https://uber2u-server-glovbogi2a-uc.a.run.app/auth/login" -->
 	<form on:submit|preventDefault={handleSubmit}>
 		<div class="flex flex-col">
 			<input name="username" id="username" type="text" />
