@@ -97,7 +97,7 @@
 			>
 		</div>
 	</div>
-	<div class="flex flex-row w-full justify-between absolute bottom-1">
+	<div class="flex flex-row w-full justify-between absolute bottom-10">
 		<button on:click={() => signout()} class="bg-red-300 rounded-full px-3"> (DEMO) Log Out</button>
 
 		<button on:click={() => signoutAndHome()} class="bg-red-300 rounded-full px-3">
