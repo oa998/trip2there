@@ -7,11 +7,11 @@
 	<div class="text-center">
 		<div class="title">Rides 2U</div>
 		<div class="subtitle">We'll get you there</div>
-		<img src={`${base}/car.webp`} alt="car" class="masked translate-up" />
+		<img src={`${base == '/' ? '' : base}/car.webp`} alt="car" class="masked translate-up" />
 
 		<div class="flex flex-row justify-around translate-up">
-			<a href={`${base}/signup`} class="button secondary"> Create Account </a>
-			<a href={`${base}/login`} class="button primary"> Log In </a>
+			<a href={`${base == '/' ? '' : base}/signup`} class="button secondary"> Create Account </a>
+			<a href={`${base == '/' ? '' : base}/login`} class="button primary"> Log In </a>
 		</div>
 	</div>
 </Center>
