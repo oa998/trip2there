@@ -23,10 +23,10 @@
 		const success = response.status == 200;
 
 		if (success) {
-			toastMsg('success');
+			toastMsg('Logged in');
 			goto(`${base}/route`);
 		} else {
-			toastErrorMsg('not success');
+			toastErrorMsg('Unsuccessful. Try again.');
 		}
 	}
 </script>
