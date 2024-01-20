@@ -28,80 +28,82 @@
 	$: ready = routeSelected && distance.length > 0;
 </script>
 
-<div class="font-semibold font-anybody py-3 text-4xl text-center mt-5 bg-violet-400">
-	Request a ride
-</div>
-<div class="p-2">
-	<StartStopForm
-		on:start-address-found={(x) => console.log('start', { x })}
-		on:end-address-found={(x) => console.log('end', { x })}
-		on:route-selected={(x) => {
-			routeSelected = x.detail.ready;
-			const { start, end } = x.detail;
-
-			if (routeSelected) {
-				loadingDistance = true;
-				dist(start, end)
-					.then((dist) => (distance = dist))
-					.catch(toastErrorCatch)
-					.then(() => (loadingDistance = false));
-				setTimeout(() => requestButton.focus());
-			} else {
-				distance = [];
-			}
-		}}
-	/>
-	<br />
-	<div class="h-24 w-full">
-		{#if routeSelected && loadingDistance}
-			<div class="border border-black rounded p-2 bg-blue-100 h-full grid place-items-center">
-				<Loading text={`Calculating Trip`} />
-			</div>
-		{/if}
-		{#if ready}
-			<div class="border border-black rounded p-2 bg-blue-200">
-				<div class="flex flex-row gap-2">
-					<div class="font-semibold pl-2">Distance:</div>
-					<div class="flex-auto">{distance[0].distance.text}</div>
-				</div>
-				<div class="flex flex-row gap-2">
-					<div class="font-semibold pl-2">Time:</div>
-					<div>{distance[0].duration.text}</div>
-				</div>
-				<div class="flex flex-row gap-2">
-					<div class="font-semibold pl-2">Price:</div>
-					<div>{distance[0].price.text}</div>
-				</div>
-			</div>
-		{/if}
+<div class="pt-5">
+	<div class="font-semibold font-anybody py-3 text-4xl text-center bg-violet-400">
+		Request a ride
 	</div>
-	<br />
-	<div class="flex flex-row justify-between w-full">
-		<button
-			bind:this={requestButton}
-			disabled={!ready}
-			class:route-selected={ready}
-			class="button secondary flex flex-row gap-2 justify-center"
-		>
-			Schedule Ride
-			<Icon icon="raphael:future" style="font-size:x-large" />
-		</button>
-		<button
-			bind:this={requestButton}
-			disabled={!ready}
-			class:route-selected={ready}
-			class="button primary"
-		>
-			Request Ride Now</button
+	<div class="p-2">
+		<StartStopForm
+			on:start-address-found={(x) => console.log('start', { x })}
+			on:end-address-found={(x) => console.log('end', { x })}
+			on:route-selected={(x) => {
+				routeSelected = x.detail.ready;
+				const { start, end } = x.detail;
+
+				if (routeSelected) {
+					loadingDistance = true;
+					dist(start, end)
+						.then((dist) => (distance = dist))
+						.catch(toastErrorCatch)
+						.then(() => (loadingDistance = false));
+					setTimeout(() => requestButton.focus());
+				} else {
+					distance = [];
+				}
+			}}
+		/>
+		<br />
+		<div class="h-24 w-full">
+			{#if routeSelected && loadingDistance}
+				<div class="border border-black rounded p-2 bg-blue-100 h-full grid place-items-center">
+					<Loading text={`Calculating Trip`} />
+				</div>
+			{/if}
+			{#if ready}
+				<div class="border border-black rounded p-2 bg-blue-200">
+					<div class="flex flex-row gap-2">
+						<div class="font-semibold pl-2">Distance:</div>
+						<div class="flex-auto">{distance[0].distance.text}</div>
+					</div>
+					<div class="flex flex-row gap-2">
+						<div class="font-semibold pl-2">Time:</div>
+						<div>{distance[0].duration.text}</div>
+					</div>
+					<div class="flex flex-row gap-2">
+						<div class="font-semibold pl-2">Price:</div>
+						<div>{distance[0].price.text}</div>
+					</div>
+				</div>
+			{/if}
+		</div>
+		<br />
+		<div class="flex flex-row justify-between w-full">
+			<button
+				bind:this={requestButton}
+				disabled={!ready}
+				class:route-selected={ready}
+				class="button secondary flex flex-row gap-2 justify-center"
+			>
+				Schedule Ride
+				<Icon icon="raphael:future" style="font-size:x-large" />
+			</button>
+			<button
+				bind:this={requestButton}
+				disabled={!ready}
+				class:route-selected={ready}
+				class="button primary"
+			>
+				Request Ride Now</button
+			>
+		</div>
+	</div>
+	<div class="flex flex-row w-full justify-between absolute bottom-1">
+		<button on:click={() => signout()} class="bg-red-300 rounded-full px-3"> (DEMO) Log Out</button>
+
+		<button on:click={() => signoutAndHome()} class="bg-red-300 rounded-full px-3">
+			(DEMO) Log Out and redirect</button
 		>
 	</div>
-</div>
-<div class="flex flex-row w-full justify-between absolute bottom-1">
-	<button on:click={() => signout()} class="bg-red-300 rounded-full px-3"> (DEMO) Log Out</button>
-
-	<button on:click={() => signoutAndHome()} class="bg-red-300 rounded-full px-3">
-		(DEMO) Log Out and redirect</button
-	>
 </div>
 
 <!-- </div> -->
