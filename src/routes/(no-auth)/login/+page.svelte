@@ -7,7 +7,7 @@
 		const body: Record<string, string> = {};
 		body.username = data.get('username') as string;
 		body.password = data.get('password') as string;
-		const jwtDuration = 1;
+		const jwtDuration = data.get('expired') == 'on' ? 7 : 1;
 
 		const response = await fetch(`/data/auth/login?jwtDuration=${jwtDuration}`, {
 			method: 'POST',
@@ -40,7 +40,7 @@
 		</div>
 
 		<div class="flex flex-row gap-3">
-			<input type="checkbox" id="expired" />
+			<input name="expired" type="checkbox" id="expired" />
 			<label for="expired">Stay logged in for a week</label>
 		</div>
 
