@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
 	import { toastErrorMsg, toastMsg } from './../../../lib/toast.ts';
 
@@ -22,6 +24,7 @@
 
 		if (success) {
 			toastMsg('success');
+			goto(`${base}/route`);
 		} else {
 			toastErrorMsg('not success');
 		}
