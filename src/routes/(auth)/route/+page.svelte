@@ -27,7 +27,9 @@
 	$: ready = routeSelected && distance.length > 0;
 </script>
 
-<div class="font-semibold py-3 text-4xl text-center">Request a ride</div>
+<div class="font-semibold font-anybody py-3 text-4xl text-center mt-5 bg-violet-400">
+	Request a ride
+</div>
 <div class="p-2">
 	<StartStopForm
 		on:start-address-found={(x) => console.log('start', { x })}

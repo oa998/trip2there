@@ -6,9 +6,9 @@
 <Center>
 	<div class="text-center">
 		<div class="flex flex-row w-full justify-center gap-1 items-center">
-			<div class="title josefin font-bold">Trip</div>
-			<div class="title josefin bigger shadowz">2</div>
-			<div class="title josefin font-bold">There</div>
+			<div class="title font-anybody font-bold">Trip</div>
+			<div class="title font-anybody bigger shadowz">2</div>
+			<div class="title font-anybody font-bold">There</div>
 		</div>
 		<div class="subtitle">One App, Endless Trips</div>
 		<img src={`${base == '/' ? '' : base}/car.webp`} alt="car" class="masked translate-up" />
@@ -25,18 +25,6 @@
 </Center>
 
 <style lang="postcss">
-	@font-face {
-		font-family: 'anybody';
-		src: url('/anybody.ttf') format('truetype-variations');
-		font-weight: 1 999;
-	}
-
-	.josefin {
-		font-family: anybody, serif;
-		font-optical-sizing: auto;
-		font-style: normal;
-	}
-
 	.title {
 		@apply text-5xl relative z-10;
 	}
