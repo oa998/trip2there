@@ -50,6 +50,11 @@
 		<button type="submit" class="button primary">Log In</button>
 	</form>
 </Center>
+<div class="flex flex-row w-full justify-center absolute bottom-1">
+	<button on:click={() => goto(`${base}/route`)} class="bg-red-300 rounded-full px-3">
+		(DEMO) Go directly to trip planning</button
+	>
+</div>
 
 <style lang="postcss">
 	form {

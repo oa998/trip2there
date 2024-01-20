@@ -7,7 +7,7 @@ export const signout = () => {
 
 export const isLoggedIn = () => {
 	return fetch('/data/auth/ping').then(async (r) => {
-		if (r.status == 401) {
+		if (r.status != 200) {
 			await signout();
 			const json = await r.json();
 			await new Promise((r) => setTimeout(r, 2000));
