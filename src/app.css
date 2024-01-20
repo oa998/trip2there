@@ -14,7 +14,7 @@
 
 .button {
 	transition: box-shadow ease-in 75ms;
-	@apply rounded-full py-2 w-[45%] disabled:bg-slate-400 disabled:text-gray-700 disabled:cursor-not-allowed text-black p-2 shadow-none;
+	@apply rounded-full py-2 w-[45%] disabled:bg-opacity-40 disabled:text-gray-200 disabled:cursor-not-allowed disabled:border-gray-300 text-black p-2 shadow-none;
 }
 .primary {
 	@apply bg-violet-600 text-white;

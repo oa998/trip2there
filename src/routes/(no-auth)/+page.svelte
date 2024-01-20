@@ -14,8 +14,12 @@
 		<img src={`${base == '/' ? '' : base}/car.webp`} alt="car" class="masked translate-up" />
 
 		<div class="flex flex-row justify-around translate-up">
-			<a href={`${base == '/' ? '' : base}/signup`} class="button secondary"> Create Account </a>
-			<a href={`${base == '/' ? '' : base}/login`} class="button primary"> Log In </a>
+			<button class="button secondary">
+				<a href={`${base == '/' ? '' : base}/signup`}> Create Account </a>
+			</button>
+			<button class="button primary">
+				<a href={`${base == '/' ? '' : base}/login`}>Log In</a>
+			</button>
 		</div>
 	</div>
 </Center>
