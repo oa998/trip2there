@@ -6,7 +6,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/data': {
-				target: 'https://anything-storage-glovbogi2a-uc.a.run.app',
+				target: 'https://trip2there-server-bulntd73xq-uc.a.run.app',
 				rewrite: (path) => {
 					return path.replace(/^\/data/, '');
 				},

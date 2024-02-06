@@ -2,13 +2,19 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
+	import EmailVerification from '$components/email-verification.svelte';
 	import { toastErrorMsg, toastMsg } from './../../../lib/toast.ts';
+
+	let needsVerification = false;
+	let email = '';
+	let password = '';
 
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
 		const data = new FormData(event.currentTarget);
-		const body: Record<string, string> = {};
-		body.email = data.get('email') as string;
-		body.password = data.get('password') as string;
+		// const body: Record<string, string> = {};
+		// body.email = data.get('email') as string;
+		// body.password = data.get('password') as string;
+		const body = { email, password };
 		const jwtDuration = data.get('expired') == 'on' ? 7 : 1;
 
 		const response = await fetch(`/data/auth/login?jwtDuration=${jwtDuration}`, {
@@ -26,29 +32,49 @@
 			toastMsg('Logged in');
 			goto(`${base}/route`);
 		} else {
-			toastErrorMsg('Unsuccessful. Try again.');
+			try {
+				const { message } = await response.json();
+				if (message.includes('Needs to verify email')) {
+					needsVerification = true;
+				} else {
+					toastErrorMsg(message);
+				}
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	}
 </script>
 
 <Center>
-	<form on:submit|preventDefault={handleSubmit}>
-		<div class="flex flex-col">
-			<input name="email" id="email" type="text" />
-			<label for="email">Email</label>
-		</div>
-		<div class="flex flex-col">
-			<input name="password" id="password" type="password" />
-			<label for="password">Password</label>
-		</div>
+	{#if needsVerification}
+		<EmailVerification
+			{email}
+			{password}
+			on:log-in-again={() => {
+				password = '';
+				needsVerification = false;
+			}}
+		/>
+	{:else}
+		<form on:submit|preventDefault={handleSubmit}>
+			<div class="flex flex-col">
+				<input name="email" id="email" type="text" bind:value={email} />
+				<label for="email">Email</label>
+			</div>
+			<div class="flex flex-col">
+				<input name="password" id="password" type="password" bind:value={password} />
+				<label for="password">Password</label>
+			</div>
 
-		<div class="flex flex-row gap-3">
-			<input name="expired" type="checkbox" id="expired" />
-			<label for="expired">Stay logged in for a week</label>
-		</div>
+			<div class="flex flex-row gap-3">
+				<input name="expired" type="checkbox" id="expired" />
+				<label for="expired">Stay logged in for a week</label>
+			</div>
 
-		<button type="submit" class="button primary">Log In</button>
-	</form>
+			<button type="submit" class="button primary">Log In</button>
+		</form>
+	{/if}
 </Center>
 <div class="flex flex-row w-full justify-center absolute bottom-1">
 	<button on:click={() => goto(`${base}/route`)} class="bg-red-300 rounded-full px-3">

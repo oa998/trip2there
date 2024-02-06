@@ -1,8 +1,19 @@
 <script>
+	import { browser } from '$app/environment';
+	import { sessionPing } from '$lib/auth';
+	import { applyToken } from '$stores/session';
 	import '@fontsource-variable/hepta-slab';
 	import '@fontsource-variable/quicksand';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import '../../app.css';
+	import { onMount } from 'svelte';
+	import '../app.css';
+
+	onMount(() => {
+		sessionPing().then((token) => applyToken(token));
+	});
+
+	if (browser) {
+	}
 </script>
 
 <div class="w-full h-full grid place-items-center">
