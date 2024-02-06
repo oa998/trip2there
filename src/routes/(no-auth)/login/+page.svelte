@@ -7,7 +7,7 @@
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
 		const data = new FormData(event.currentTarget);
 		const body: Record<string, string> = {};
-		body.username = data.get('username') as string;
+		body.email = data.get('email') as string;
 		body.password = data.get('password') as string;
 		const jwtDuration = data.get('expired') == 'on' ? 7 : 1;
 
@@ -34,8 +34,8 @@
 <Center>
 	<form on:submit|preventDefault={handleSubmit}>
 		<div class="flex flex-col">
-			<input name="username" id="username" type="text" />
-			<label for="username">Username</label>
+			<input name="email" id="email" type="text" />
+			<label for="email">Email</label>
 		</div>
 		<div class="flex flex-col">
 			<input name="password" id="password" type="password" />
