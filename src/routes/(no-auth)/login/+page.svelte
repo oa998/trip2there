@@ -3,6 +3,7 @@
 	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
 	import EmailVerification from '$components/email-verification.svelte';
+	import { sessionPing } from '$lib/auth.ts';
 	import { toastErrorMsg, toastMsg } from './../../../lib/toast.ts';
 
 	let needsVerification = false;
@@ -30,7 +31,7 @@
 
 		if (success) {
 			toastMsg('Logged in');
-			goto(`${base}/route`);
+			sessionPing().then(() => goto(`${base}/route`));
 		} else {
 			try {
 				const { message } = await response.json();

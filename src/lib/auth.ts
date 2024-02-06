@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation';
-import { resetSession } from '$stores/session';
+import { applyToken, resetSession } from '$stores/session';
 import { peekFor401, throwIfNot2xx } from './fetch-utils';
 import { toastErrorCatch, toastMsg } from './toast';
 
@@ -51,5 +51,6 @@ export function sessionPing() {
 	})
 		.then(peekFor401)
 		.then(throwIfNot2xx)
-		.then((r) => r.text()); // token
+		.then((r) => r.text()) // token
+		.then((token) => applyToken(token));
 }
