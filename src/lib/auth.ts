@@ -54,3 +54,17 @@ export function sessionPing() {
 		.then((r) => r.text()) // token
 		.then((token) => applyToken(token));
 }
+
+export function signup(body: { email: string; password: string; phoneNumber: string }) {
+	return fetch(`/data/auth/signup`, {
+		method: 'GET',
+		headers: {
+			accept: 'application/json',
+			['content-type']: 'application/json',
+			body: JSON.stringify(body)
+		},
+		credentials: 'include'
+	})
+		.then(peekFor401)
+		.then(throwIfNot2xx);
+}

@@ -26,13 +26,11 @@ export const applyToken = (token: string) => {
 			email: string;
 			orgsAndRoles: { org_name: string; role_name: string }[];
 		};
-		console.log({ decoded });
 		session.set({
 			email: decoded?.email,
 			orgsAndRoles: decoded?.orgsAndRoles
 		});
 	} else {
-		console.log('resetting');
 		resetSession();
 	}
 };

@@ -3,12 +3,19 @@
 	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
 	import EmailVerification from '$components/email-verification.svelte';
+	import LoadingButton from '$components/loading-button.svelte';
 	import { sessionPing } from '$lib/auth.ts';
+	import { isLoading } from '$stores/loading';
+	import { session } from '$stores/session.ts';
 	import { toastErrorMsg, toastMsg } from './../../../lib/toast.ts';
 
 	let needsVerification = false;
 	let email = '';
 	let password = '';
+
+	$: if ($session.email) {
+		goto(`${base}/route`);
+	}
 
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
 		const data = new FormData(event.currentTarget);
@@ -17,6 +24,7 @@
 		// body.password = data.get('password') as string;
 		const body = { email, password };
 		const jwtDuration = data.get('expired') == 'on' ? 7 : 1;
+		$isLoading = false;
 
 		const response = await fetch(`/data/auth/login?jwtDuration=${jwtDuration}`, {
 			method: 'POST',
@@ -28,6 +36,8 @@
 		});
 
 		const success = response.status == 200;
+
+		$isLoading = false;
 
 		if (success) {
 			toastMsg('Logged in');
@@ -58,22 +68,30 @@
 			}}
 		/>
 	{:else}
-		<form on:submit|preventDefault={handleSubmit}>
+		<form on:submit|preventDefault={handleSubmit} class:disable={$isLoading}>
 			<div class="flex flex-col">
-				<input name="email" id="email" type="text" bind:value={email} />
+				<input name="email" id="email" type="text" bind:value={email} disabled={$isLoading} />
 				<label for="email">Email</label>
 			</div>
 			<div class="flex flex-col">
-				<input name="password" id="password" type="password" bind:value={password} />
+				<input
+					name="password"
+					id="password"
+					type="password"
+					bind:value={password}
+					disabled={$isLoading}
+				/>
 				<label for="password">Password</label>
 			</div>
 
 			<div class="flex flex-row gap-3">
-				<input name="expired" type="checkbox" id="expired" />
+				<input name="expired" type="checkbox" id="expired" disabled={$isLoading} />
 				<label for="expired">Stay logged in for a week</label>
 			</div>
 
-			<button type="submit" class="button primary">Log In</button>
+			<LoadingButton type="submit" class="button primary self-end" loading={$isLoading}
+				>Log In</LoadingButton
+			>
 		</form>
 	{/if}
 </Center>
@@ -93,7 +111,9 @@
 	label {
 		@apply text-xs;
 	}
-	button[type='submit'] {
-		@apply self-end;
+
+	form.disable input,
+	form.disable label {
+		@apply border-gray-400 text-gray-400 bg-transparent;
 	}
 </style>

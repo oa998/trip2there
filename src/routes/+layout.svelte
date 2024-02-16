@@ -11,7 +11,7 @@
 	});
 </script>
 
-<div class="w-full h-full grid place-items-center">
+<div class="w-full h-full grid place-items-center relative">
 	<div
 		class="w-full h-full max-h-full sm:max-h-[700px] sm:max-w-sm sm:border sm:border-black min-w-[400px] relative"
 	>

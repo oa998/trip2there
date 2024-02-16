@@ -1,11 +1,12 @@
 <script>
 	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
+	import Header from '$components/header.svelte';
 	import { session } from '$stores/session';
 </script>
 
 {#if $session.email}
-	<div class="text-black">{$session.email}</div>
+	<Header />
 	<slot />
 {:else}
 	<Center>
@@ -16,3 +17,6 @@
 		</div>
 	</Center>
 {/if}
+
+<style>
+</style>
