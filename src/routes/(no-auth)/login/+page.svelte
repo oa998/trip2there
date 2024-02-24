@@ -5,7 +5,7 @@
 	import EmailVerification from '$components/email-verification.svelte';
 	import LoadingButton from '$components/loading-button.svelte';
 	import { sessionPing } from '$lib/auth.ts';
-	import { isLoading } from '$stores/loading';
+	import isLoading from '$stores/loading';
 	import { session } from '$stores/session.ts';
 	import { toastErrorMsg, toastMsg } from './../../../lib/toast.ts';
 
