@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
 	import Header from '$components/header.svelte';
 	import LoadingButton from '$components/loading-button.svelte';
@@ -21,6 +23,7 @@
 		$isLoading = true;
 		await signup(body)
 			.then(() => toastMsg('Account created 🎉'))
+			.then(() => goto(`${base == '/' ? '' : base}/signup/verify-email?email=${email}`))
 			.catch(toastErrorCatch)
 			.then(() => ($isLoading = false));
 	}
