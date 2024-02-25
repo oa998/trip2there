@@ -4,7 +4,6 @@
 	import { toastErrorCatch } from '$lib/toast';
 	import Icon from '@iconify/svelte';
 	import Loading from './../../../components/loading.svelte';
-	import { signout, signoutAndHome } from './../../../lib/auth.ts';
 	let routeSelected = false;
 	let requestButton: HTMLButtonElement;
 	let loadingDistance = false;
@@ -29,9 +28,7 @@
 </script>
 
 <div class="pt-5">
-	<div class="font-semibold font-anybody py-3 text-4xl text-center bg-violet-400">
-		Request a ride
-	</div>
+	<div class="font-semibold font-anybody py-3 text-4xl text-center title-blue">Request a ride</div>
 	<div class="p-2">
 		<StartStopForm
 			on:start-address-found={(x) => console.log('start', { x })}
@@ -58,6 +55,15 @@
 				<div class="border border-black rounded p-2 bg-blue-100 h-full grid place-items-center">
 					<Loading text={`Calculating Trip`} />
 				</div>
+			{:else if !ready}
+				<div class="w-full flex justify-center">
+					<embed
+						type="text/html"
+						src="https://lottie.host/embed/2f0ea021-1f40-44f3-b903-a0491ef15203/ULd5BKWJbm.json"
+						width="200"
+						height="200"
+					/>
+				</div>
 			{/if}
 			{#if ready}
 				<div class="border border-black rounded p-2 bg-blue-200">
@@ -74,35 +80,28 @@
 						<div>{distance[0].price.text}</div>
 					</div>
 				</div>
+				<br />
+				<div class="flex flex-row justify-between w-full">
+					<button
+						bind:this={requestButton}
+						disabled={!ready}
+						class:route-selected={ready}
+						class="button secondary flex flex-row gap-2 justify-center"
+					>
+						Schedule Ride
+						<Icon icon="raphael:future" style="font-size:x-large" />
+					</button>
+					<button
+						bind:this={requestButton}
+						disabled={!ready}
+						class:route-selected={ready}
+						class="button primary"
+					>
+						Request Ride Now</button
+					>
+				</div>
 			{/if}
 		</div>
-		<br />
-		<div class="flex flex-row justify-between w-full">
-			<button
-				bind:this={requestButton}
-				disabled={!ready}
-				class:route-selected={ready}
-				class="button secondary flex flex-row gap-2 justify-center"
-			>
-				Schedule Ride
-				<Icon icon="raphael:future" style="font-size:x-large" />
-			</button>
-			<button
-				bind:this={requestButton}
-				disabled={!ready}
-				class:route-selected={ready}
-				class="button primary"
-			>
-				Request Ride Now</button
-			>
-		</div>
-	</div>
-	<div class="flex flex-row w-full justify-between absolute bottom-10">
-		<button on:click={() => signout()} class="bg-red-300 rounded-full px-3"> (DEMO) Log Out</button>
-
-		<button on:click={() => signoutAndHome()} class="bg-red-300 rounded-full px-3">
-			(DEMO) Log Out and redirect</button
-		>
 	</div>
 </div>
 
@@ -114,5 +113,8 @@
 	}
 	.route-selected:not(:active) {
 		@apply shadow-gray-500 shadow-lg;
+	}
+	.title-blue {
+		/* background-image: linear-gradient(to bottom right, rgb(44, 44, 255) 60%, blue); */
 	}
 </style>

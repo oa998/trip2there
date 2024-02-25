@@ -48,3 +48,21 @@
 	font-optical-sizing: auto;
 	font-style: normal;
 }
+
+input[type='text'],
+input[type='password'] {
+	@apply border-b-black border-b py-1 px-3;
+}
+input[type='text']:disabled,
+input[type='password']:disabled {
+	@apply border-gray-400 text-gray-400 bg-transparent border-b;
+}
+
+input + label,
+div:has(> input) + label {
+	@apply text-xs;
+}
+
+form {
+	@apply flex flex-col w-3/4 gap-8;
+}

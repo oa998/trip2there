@@ -1,12 +1,55 @@
 <script>
 	import { session } from '$stores/session';
 
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+	import { signout } from '$lib/auth';
 	import isLoading from '$stores/loading';
 	import Company from './company.svelte';
+	import Menu from './menu.svelte';
+
+	const loggedInNav = [
+		{
+			text: 'Profile',
+			class: 'bg-slate-900 border border-slate-500',
+			icon: 'ph:user-circle-light',
+			action: () => goto(`${base}/profile`)
+		},
+		{
+			text: 'Request Ride',
+			class: 'bg-slate-900 border border-slate-200',
+			icon: 'clarity:car-line',
+			action: () => goto(`${base}/route`)
+		},
+		{
+			text: 'Log out',
+			class: 'bg-slate-900 border border-slate-200',
+			// icon: 'clarity:car-line',
+			action: () =>
+				signout().then(() => {
+					goto(`/`);
+				})
+		}
+	];
+
+	const loggedOutNav = [
+		{
+			text: 'Log In',
+			class: 'bg-slate-900 border border-slate-200',
+			// icon: 'clarity:car-line',
+			action: () => goto(`${base}/login`)
+		},
+		{
+			text: 'Create Account',
+			class: 'bg-slate-900 border border-slate-200',
+			// icon: 'clarity:car-line',
+			action: () => goto(`${base}/signup`)
+		}
+	];
 </script>
 
 <div
-	class="absolute top-0 left-0 w-full flex flex-row justify-between items-center gap-3 p-2 border-b border-black overflow-hidden"
+	class="absolute top-0 left-0 w-full flex flex-row justify-between items-center gap-3 p-2 border-b border-black overflow-hidden pr-10"
 >
 	<div class="header-bg absolute top-0 left-0 h-[400px]" class:isLoading={$isLoading} />
 	<Company header class="flex-0 w-min" />
@@ -14,6 +57,13 @@
 		<div class="text-xs sm:text-sm flex-shrink text-ellipsis overflow-hidden z-10">
 			{$session.email}
 		</div>
+	{/if}
+</div>
+<div class="absolute top-4 right-2">
+	{#if $session.email}
+		<Menu icon={'ic:round-menu'} actions={loggedInNav} />
+	{:else}
+		<Menu icon={'ic:round-menu'} actions={loggedOutNav} />
 	{/if}
 </div>
 <div class="mb-14" />

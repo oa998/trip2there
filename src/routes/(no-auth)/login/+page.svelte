@@ -27,10 +27,6 @@
 
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
 		const data = new FormData(event.currentTarget);
-		// const body: Record<string, string> = {};
-		// body.email = data.get('email') as string;
-		// body.password = data.get('password') as string;
-		const body = { email, password };
 		const jwtDuration = data.get('expired') == 'on' ? 7 : 1;
 		$isLoading = true;
 
@@ -81,31 +77,15 @@
 				<label for="expired">Stay logged in for a week</label>
 			</div>
 
-			<LoadingButton type="submit" class="button primary self-end" loading={$isLoading}
-				>Log In</LoadingButton
+			<LoadingButton
+				type="submit"
+				class="button primary self-end"
+				loading={$isLoading}
+				disabled={!email || !password}>Log In</LoadingButton
 			>
 		</form>
 	{/if}
 </Center>
-<div class="flex flex-row w-full justify-center absolute bottom-1">
-	<button on:click={() => goto(`${base}/route`)} class="bg-red-300 rounded-full px-3">
-		(DEMO) Go directly to trip planning</button
-	>
-</div>
 
 <style lang="postcss">
-	form {
-		@apply flex flex-col w-3/4 gap-8;
-	}
-	input {
-		@apply border-b-black border-b py-1 px-3;
-	}
-	label {
-		@apply text-xs;
-	}
-
-	form.disable input,
-	form.disable label {
-		@apply border-gray-400 text-gray-400 bg-transparent;
-	}
 </style>

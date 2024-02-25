@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
+	import PhoneNumber from '$components/form-inputs/phone-number.svelte';
 	import Header from '$components/header.svelte';
 	import LoadingButton from '$components/loading-button.svelte';
 	import { signup } from '$lib/auth.ts';
@@ -27,19 +28,11 @@
 			.catch(toastErrorCatch)
 			.then(() => ($isLoading = false));
 	}
-
-	$: {
-		if (/^\d{3}$/.test(phoneNumber)) {
-			phoneNumber += '-';
-		} else if (/^\d{3}-\d{3}$/.test(phoneNumber)) {
-			phoneNumber += '-';
-		}
-	}
 </script>
 
 <Header />
 <Center>
-	<form on:submit|preventDefault={handleSubmit} class:disable={$isLoading}>
+	<form on:submit|preventDefault={handleSubmit}>
 		<div class="flex flex-col">
 			<input
 				name="email"
@@ -87,32 +80,8 @@
 			/>
 			<label for="confirm-password">Confirm Password</label>
 		</div>
-		<div class="flex flex-col justify-end">
-			<div class="flex flex-row">
-				<div class="self-center border border-black bg-gray-300 text-gray-600 rounded-l h-full p-1">
-					+1
-				</div>
-				<input
-					name="phone"
-					id="phone"
-					type="text"
-					on:input={(e) => {
-						if (e.inputType == 'deleteContentBackward' && /-$/.test(phoneNumber)) {
-							phoneNumber = phoneNumber.split('').slice(0, -2).join('');
-						}
-					}}
-					class:disable={$isLoading}
-					bind:value={phoneNumber}
-					required
-					placeholder="731-555-5555"
-					title={`Area code and phone number. example: 731-555-5555`}
-					pattern="^\d\d\d-\d\d\d-\d\d\d\d$"
-					class="w-full"
-					maxlength="12"
-				/>
-			</div>
-			<label for="phone">Phone number</label>
-		</div>
+
+		<PhoneNumber bind:phoneNumber />
 
 		<div class="flex flex-col gap-2">
 			<div class="text-xs self-center italic text-gray-700">
@@ -129,17 +98,4 @@
 </Center>
 
 <style lang="postcss">
-	form {
-		@apply flex flex-col w-3/4 gap-8;
-	}
-	input {
-		@apply border-b-black border-b py-1 px-3;
-	}
-	label {
-		@apply text-xs;
-	}
-	form.disable input,
-	form.disable label {
-		@apply border-gray-400 text-gray-400 bg-transparent;
-	}
 </style>
