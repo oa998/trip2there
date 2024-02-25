@@ -4,6 +4,7 @@
 	import Center from '$components/center.svelte';
 	import Header from '$components/header.svelte';
 	import { sendVerificationEmail } from '$lib/auth';
+	import { toastErrorCatch, toastMsg } from '$lib/toast';
 	import authLocal from '$stores/auth-local';
 	import isLoading from '$stores/loading';
 	import Icon from '@iconify/svelte';
@@ -14,7 +15,8 @@
 	let email = '';
 	let password = '';
 	let retry = false;
-	let delayForRetry = false;
+	let timeout: number;
+	let delayForRetry = 0;
 	let flyIn = false;
 	let urlParams = new URLSearchParams();
 	if (browser) {
@@ -27,12 +29,21 @@
 	}
 
 	onMount(() => {
-		setTimeout(() => (flyIn = true), 300);
-	});
-
-	$: {
+		setTimeout(() => (flyIn = true), 500);
 		email = $authLocal.email || urlParams.get('email') || '';
 		password = $authLocal.password || '';
+	});
+
+	authLocal.subscribe(({ email, password }) => {
+		email = $authLocal.email || urlParams.get('email') || '';
+		password = $authLocal.password || '';
+	});
+
+	$: if (timeout && delayForRetry > 0) {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => {
+			delayForRetry--;
+		}, 1000);
 	}
 </script>
 
@@ -84,7 +95,7 @@
 	<details class="bg-slate-400">
 		<summary class="text-center">Need another verification email?</summary>
 		<div class="grid place-items-center py-14 gap-2">
-			{#if retry && email && password}
+			{#if retry && email && $authLocal.password}
 				<div class="text-sm text-center px-4">
 					if you need another verification email, click "Send again".
 				</div>
@@ -104,16 +115,28 @@
 				</div>
 			{/if}
 			<button
-				class="self-center button secondary bg-white"
+				class="self-center button secondary bg-white disabled:text-gray-700"
+				disabled={delayForRetry || !password}
 				on:click={async () => {
 					$isLoading = true;
-					delayForRetry = true;
-					await sendVerificationEmail(email, password);
-					$isLoading = false;
-					setTimeout(() => {
-						delayForRetry = false;
-					}, 20000);
-				}}>{!delayForRetry ? 'Send again' : 'Please wait 20 seconds before trying again.'}</button
+					await sendVerificationEmail(email, password)
+						.then(({ verified }) => {
+							if (verified) {
+								toastMsg('Email verified ✅.Try Logging in.');
+							} else {
+								toastMsg('Email sent');
+								delayForRetry = 30;
+								timeout = setTimeout(() => {
+									delayForRetry--;
+								}, 1000);
+							}
+						})
+						.catch(toastErrorCatch)
+						.then(() => ($isLoading = false));
+				}}
+				>{delayForRetry == 0
+					? 'Send again'
+					: `Please wait ${delayForRetry} seconds before trying again.`}</button
 			>
 		</div>
 	</details>

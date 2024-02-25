@@ -56,8 +56,9 @@ export const sendVerificationEmail = (email: string, password: string) => {
 		body: JSON.stringify({ email, password })
 	})
 		.then(throwIfNot2xx)
-		.then((r) => toastMsg('Email verification sent'))
-		.catch(toastErrorCatch);
+		.then((r) => {
+			return r.json(); // { verified: boolean }
+		});
 };
 
 export function sessionPing() {
