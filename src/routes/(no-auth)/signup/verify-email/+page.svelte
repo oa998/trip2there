@@ -80,42 +80,44 @@
 	</div>
 </div>
 
-<details class="bg-slate-400">
-	<summary class="text-center">Need another verification email?</summary>
-	<div class="grid place-items-center py-14 gap-2">
-		{#if retry && email && password}
-			<div class="text-sm text-center px-4">
-				if you need another verification email, click "Send again".
-			</div>
-		{:else if retry && email}
-			<div class="text-sm text-center px-4">
-				if you need another verification email, input your password below and click "Send again".
-			</div>
-			<div class="inputs self-center">
-				<div class="flex flex-col">
-					<input type="text" bind:value={email} disabled />
-					<label for="email">Email</label>
+{#if retry}
+	<details class="bg-slate-400">
+		<summary class="text-center">Need another verification email?</summary>
+		<div class="grid place-items-center py-14 gap-2">
+			{#if retry && email && password}
+				<div class="text-sm text-center px-4">
+					if you need another verification email, click "Send again".
 				</div>
-				<div class="flex flex-col">
-					<input type="password" bind:value={password} disabled={$isLoading} />
-					<label for="password">Password</label>
+			{:else if retry && email}
+				<div class="text-sm text-center px-4">
+					if you need another verification email, input your password below and click "Send again".
 				</div>
-			</div>
-		{/if}
-		<button
-			class="self-center button secondary bg-white"
-			on:click={async () => {
-				$isLoading = true;
-				delayForRetry = true;
-				await sendVerificationEmail(email, password);
-				$isLoading = false;
-				setTimeout(() => {
-					delayForRetry = false;
-				}, 20000);
-			}}>{!delayForRetry ? 'Send again' : 'Please wait 20 seconds before trying again.'}</button
-		>
-	</div>
-</details>
+				<div class="inputs self-center">
+					<div class="flex flex-col">
+						<input type="text" bind:value={email} disabled />
+						<label for="email">Email</label>
+					</div>
+					<div class="flex flex-col">
+						<input type="password" bind:value={password} disabled={$isLoading} />
+						<label for="password">Password</label>
+					</div>
+				</div>
+			{/if}
+			<button
+				class="self-center button secondary bg-white"
+				on:click={async () => {
+					$isLoading = true;
+					delayForRetry = true;
+					await sendVerificationEmail(email, password);
+					$isLoading = false;
+					setTimeout(() => {
+						delayForRetry = false;
+					}, 20000);
+				}}>{!delayForRetry ? 'Send again' : 'Please wait 20 seconds before trying again.'}</button
+			>
+		</div>
+	</details>
+{/if}
 
 <style lang="postcss">
 	.inputs {
