@@ -6,7 +6,8 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/data': {
-				target: 'https://trip2there-server-bulntd73xq-uc.a.run.app',
+				// target: 'https://trip2there-server-bulntd73xq-uc.a.run.app',
+				target: 'http://localhost:3000',
 				rewrite: (path) => {
 					return path.replace(/^\/data/, '');
 				},

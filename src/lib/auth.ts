@@ -1,7 +1,28 @@
 import { goto } from '$app/navigation';
+import authLocal from '$stores/auth-local';
 import { applyToken, resetSession } from '$stores/session';
 import { peekFor401, throwIfNot2xx } from './fetch-utils';
 import { toastErrorCatch, toastMsg } from './toast';
+
+export const signin = async (email: string, password: string, jwtDuration: 1 | 7) => {
+	authLocal.set({ email, password });
+	return fetch(`/data/auth/login?jwtDuration=${jwtDuration}`, {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({
+			email,
+			password
+		})
+	})
+		.then(throwIfNot2xx)
+		.then(() => toastMsg('Logged in'))
+		.then(() => {
+			authLocal.set({ email: '', password: '' });
+		});
+};
 
 export const signout = () => {
 	return fetch('/data/auth/sign-out')
@@ -16,7 +37,6 @@ export const isLoggedIn = () => {
 		if (r.status != 200) {
 			await signout();
 			const json = await r.json();
-			await new Promise((r) => setTimeout(r, 2000));
 			throw new Error(json.message);
 		}
 	});
@@ -52,18 +72,20 @@ export function sessionPing() {
 		.then(peekFor401)
 		.then(throwIfNot2xx)
 		.then((r) => r.text()) // token
-		.then((token) => applyToken(token));
+		.then((token) => applyToken(token))
+		.catch((e) => console.log('failed to check session', e));
 }
 
 export function signup(body: { email: string; password: string; phoneNumber: string }) {
+	authLocal.set({ email: body.email, password: body.password });
+
 	return fetch(`/data/auth/signup`, {
-		method: 'GET',
+		method: 'POST',
 		headers: {
-			accept: 'application/json',
-			['content-type']: 'application/json',
-			body: JSON.stringify(body)
+			['content-type']: 'application/json'
 		},
-		credentials: 'include'
+		body: JSON.stringify(body)
+		// credentials: 'include'
 	})
 		.then(peekFor401)
 		.then(throwIfNot2xx);

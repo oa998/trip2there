@@ -1,17 +1,25 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
 	import EmailVerification from '$components/email-verification.svelte';
+	import Header from '$components/header.svelte';
 	import LoadingButton from '$components/loading-button.svelte';
-	import { sessionPing } from '$lib/auth.ts';
+	import { sessionPing, signin } from '$lib/auth.ts';
+	import { toastErrorCatch } from '$lib/toast';
 	import isLoading from '$stores/loading';
 	import { session } from '$stores/session.ts';
-	import { toastErrorMsg, toastMsg } from './../../../lib/toast.ts';
 
 	let needsVerification = false;
 	let email = '';
 	let password = '';
+
+	let urlParams = new URLSearchParams();
+	if (browser) {
+		urlParams = new URLSearchParams(window.location.search);
+		email = urlParams.get('email') || '';
+	}
 
 	$: if ($session.email) {
 		goto(`${base}/route`);
@@ -24,38 +32,22 @@
 		// body.password = data.get('password') as string;
 		const body = { email, password };
 		const jwtDuration = data.get('expired') == 'on' ? 7 : 1;
-		$isLoading = false;
+		$isLoading = true;
 
-		const response = await fetch(`/data/auth/login?jwtDuration=${jwtDuration}`, {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json'
-			},
-			credentials: 'include',
-			body: JSON.stringify(body)
-		});
-
-		const success = response.status == 200;
-
-		$isLoading = false;
-
-		if (success) {
-			toastMsg('Logged in');
-			sessionPing().then(() => goto(`${base}/route`));
-		} else {
-			try {
-				const { message } = await response.json();
-				if (message.includes('Needs to verify email')) {
-					needsVerification = true;
+		await signin(email, password, jwtDuration)
+			.then(() => sessionPing().then(() => goto(`${base}/route`)))
+			.catch((e) => {
+				if (e.message.includes('Needs to verify email')) {
+					goto(`${base == '/' ? '' : base}/signup/verify-email?email=${email}&retry=true`);
 				} else {
-					toastErrorMsg(message);
+					toastErrorCatch(e);
 				}
-			} catch (e) {
-				console.log(e);
-			}
-		}
+			})
+			.then(() => ($isLoading = false));
 	}
 </script>
+
+<Header />
 
 <Center>
 	{#if needsVerification}

@@ -4,41 +4,27 @@
 	import LoadingButton from '$components/loading-button.svelte';
 	import { signup } from '$lib/auth.ts';
 	import isLoading from '$stores/loading';
-	import { toastMsg } from './../../../lib/toast.ts';
+	import { toastErrorCatch, toastMsg } from './../../../lib/toast.ts';
 
-	let email = 'asdf@asdf.asdf';
-	let password = 'asdfasdf';
-	let confirmPassword = 'asdfasdf';
-	let phoneNumber = '';
+	let email = '';
+	let password = '';
+	let confirmPassword = '';
+	let phoneNumber = '731-676-3291';
 
 	async function handleSubmit() {
-		const body = { email, password, phoneNumber: `1${phoneNumber.replace(/\D/g, '')}` };
+		const body = {
+			email,
+			password,
+			phoneNumber: phoneNumber.replace(/\D/g, '')
+		};
 
 		$isLoading = true;
-		try {
-			const response = await signup(body);
-			const success = response.status == 200;
-
-			if (success) {
-				toastMsg('success?');
-				// sessionPing().then(() => goto(`${base}/route`));
-			} else {
-				// try {
-				// 	const { message } = await response.json();
-				// 	if (message.includes('Needs to verify email')) {
-				// 	} else {
-				// 		toastErrorMsg(message);
-				// 	}
-				// } catch (e) {
-				// 	console.log(e);
-				// }
-			}
-		} catch (e) {
-			console.log(e);
-		} finally {
-			$isLoading = false;
-		}
+		await signup(body)
+			.then(() => toastMsg('Account created 🎉'))
+			.catch(toastErrorCatch)
+			.then(() => ($isLoading = false));
 	}
+
 	$: {
 		if (/^\d{3}$/.test(phoneNumber)) {
 			phoneNumber += '-';

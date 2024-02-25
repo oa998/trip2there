@@ -1,14 +1,18 @@
 <script lang="ts">
+	import { base } from '$app/paths';
+
 	export let header = false;
 	let clazz = '';
 	export { clazz as class };
 </script>
 
-<div class={`flex flex-row w-full justify-center gap-1 items-center ${clazz} `}>
-	<div class="title font-anybody font-bold" class:text-shrink={header}>Trip</div>
-	<div class="title font-anybody bigger shadowz" class:text-shrink={header}>2</div>
-	<div class="title font-anybody font-bold" class:text-shrink={header}>There</div>
-</div>
+<a href={base || '/'}>
+	<div class={`flex flex-row w-full justify-center gap-1 items-center ${clazz} `}>
+		<div class="title font-anybody font-bold" class:text-shrink={header}>Trip</div>
+		<div class="title font-anybody bigger shadowz" class:text-shrink={header}>2</div>
+		<div class="title font-anybody font-bold" class:text-shrink={header}>There</div>
+	</div>
+</a>
 
 <style lang="postcss">
 	.title {

@@ -6,7 +6,7 @@
 </script>
 
 <div
-	class=" absolute top-0 left-0 w-full flex flex-row justify-between items-center gap-3 p-2 border-b border-black overflow-hidden"
+	class="absolute top-0 left-0 w-full flex flex-row justify-between items-center gap-3 p-2 border-b border-black overflow-hidden"
 >
 	<div class="header-bg absolute top-0 left-0 h-[400px]" class:isLoading={$isLoading} />
 	<Company header class="flex-0 w-min" />
@@ -16,6 +16,7 @@
 		</div>
 	{/if}
 </div>
+<div class="mb-14" />
 
 <style lang="postcss">
 	.header-bg {
@@ -27,7 +28,7 @@
 		animation: slide 90s linear infinite;
 	}
 	.header-bg.isLoading {
-		animation: slide 4s linear infinite;
+		animation: slide 6s linear infinite;
 	}
 
 	@keyframes slide {
