@@ -9,7 +9,7 @@
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
-	let phoneNumber = '731-676-3291';
+	let phoneNumber = '';
 
 	async function handleSubmit() {
 		const body = {
