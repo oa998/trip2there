@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Company from '$components/company.svelte';
+	import { signout } from '$lib/auth';
 	import { session } from '$stores/session';
 </script>
 
@@ -15,9 +16,10 @@
 
 		<div class="flex flex-row justify-around translate-up">
 			{#if $session.email}
-				<div class="flex flex-col">
+				<div class="flex flex-col gap-2">
 					<div>Logged in - <b>{$session.email}</b></div>
-					<a href={`${base}/route`} class="underline text-lg">Request a ride</a>
+					<a href={`${base}/route`} class="button primary">Request a ride</a>
+					<button on:click={() => signout()} class="button secondary">Log Out</button>
 				</div>
 			{:else}
 				<button class="button secondary" on:click={() => goto(`${base == '/' ? '' : base}/signup`)}>
