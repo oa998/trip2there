@@ -2,6 +2,7 @@
 	import isLoading from '$stores/loading';
 	export let phoneNumber: string = '';
 	export let disabled = false;
+	export let rightLabel = '';
 	let valid: null | boolean = null;
 	const isValidRE = '^\\d\\d\\d-\\d\\d\\d-\\d\\d\\d\\d$';
 
@@ -53,10 +54,15 @@
 			maxlength="12"
 		/>
 	</div>
-	<label for="phone">
-		<span>Phone number</span>
-		{#if valid != null && !valid}
-			<span class="italic text-red-600"> (invalid)</span>
+	<label for="phone" class="flex flex-row justify-between">
+		<div>
+			<span>Phone number</span>
+			{#if valid != null && !valid}
+				<span class="italic text-red-600"> (invalid)</span>
+			{/if}
+		</div>
+		{#if rightLabel}
+			<span class="font-bold">{rightLabel}</span>
 		{/if}
 	</label>
 </div>

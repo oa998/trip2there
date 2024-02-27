@@ -45,7 +45,11 @@
 
 		<div class="flex flex-col gap-1">
 			<div class="flex flex-row gap-2 items-start">
-				<PhoneNumber bind:phoneNumber disabled={disablePhoneNumber} />
+				<PhoneNumber
+					bind:phoneNumber
+					disabled={disablePhoneNumber}
+					rightLabel={$user?.verified_phone ? 'Verified' : ''}
+				/>
 
 				{#if disablePhoneNumber}
 					<button
@@ -86,9 +90,7 @@
 					</button>
 				{/if}
 			</div>
-			{#if $user?.verified_phone}
-				<div class="text-xs text-right">Phone number is verified.</div>
-			{:else}
+			{#if !$user?.verified_phone}
 				<div class="text-xs text-right">
 					Phone number is <b>not</b> verified.
 					<a href={`${base}/profile/verify-phone`} class="underline cursor-pointer text-blue-800"
