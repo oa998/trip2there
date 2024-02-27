@@ -22,16 +22,20 @@ export interface Price {
 }
 
 export async function dist(start: string, end: string): Promise<DistElement[]> {
-	const s = encodeURI(
-		`${base == '/' ? '' : base}/data/gcp-apis/distance?end=${end}&start=${start}`
-	);
-	return fetch(s).then(async (r) => {
+	return fetch(`${base == '/' ? '' : base}/data/gcp-apis/distance`, {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({ start, end })
+	}).then(async (r) => {
 		const json = await r.json();
 		if (!/^200$/.test('' + r.status)) {
 			throw new Error(json.message);
 		}
 		console.log(JSON.stringify(json, null, 2));
-		let cost = json.distance.value * 0.001; // 0.1 cent per meter
+		let cost = 10 + json.distance.value * 0.001; // $1 per km plus a flat $10;
 		json.price = {
 			value: cost.toFixed(2),
 			text: `$${cost.toFixed(2)}`

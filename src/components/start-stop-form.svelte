@@ -1,9 +1,15 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import type { Coordinate } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
+	const coordinateDispatcher = createEventDispatcher<{
+		'start-coords': Coordinate;
+		'end-coords': Coordinate;
+	}>();
 
+	const KEY = 'AIzaSyCnOoJT9SDfNi4W-wHknlF23NtRkUleP9U';
 	let start: string;
 	let end: string;
 
@@ -32,9 +38,13 @@
 				window.alert("No details available for input: '" + place.name + "'");
 				return;
 			}
-			console.log('start addess selected: ', place.formatted_address);
+			console.log('start addess selected: ', place.formatted_address, place);
 			start = place.formatted_address;
 			dispatch('start-address-found', place.formatted_address);
+			coordinateDispatcher('start-coords', {
+				lat: place.geometry.location.lat(),
+				lng: place.geometry.location.lng()
+			});
 		});
 
 		autocompleteEnd.addListener('place_changed', () => {
@@ -44,9 +54,13 @@
 				window.alert("No details available for input: '" + place.name + "'");
 				return;
 			}
-			console.log('end addess selected: ', place.formatted_address);
+			console.log('end address selected: ', place.formatted_address, place);
 			end = place.formatted_address;
 			dispatch('end-address-found', place.formatted_address);
+			coordinateDispatcher('end-coords', {
+				lat: place.geometry.location.lat(),
+				lng: place.geometry.location.lng()
+			});
 		});
 	}
 
@@ -65,7 +79,7 @@
 		if (browser) {
 			window.initPlaces = initPlaces;
 			loadScript(
-				`https://maps.googleapis.com/maps/api/js?key=AIzaSyCDqJ6iXrIkxBNOetKAbV_MMwdjzfX_7Fk&libraries=places&callback=initPlaces`
+				`https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places&callback=initPlaces`
 			);
 		}
 	});

@@ -1,0 +1,93 @@
+function calculateZoom(WidthPixel = 100, Ratio = 80) {
+			const distInKM = distanceInMiles * 1.609344;
+			// from a segment Length (km),
+			// with size ratio of the segment expected on a map (70%),
+			// with a map WidthPixel width in pixels (100px),
+			// and a latitude (45°) we can get the best Zoom
+			// assume earth is a perfect ball with radius : 6,378,137m and
+			//      circumference at the equator = 40,075,016.7 m
+			// The full world on google map is available in tiles of 256 px;
+			// it has a ratio of 156543.03392 (px/m).
+			// For Z = 0;
+			// pixel scale at the Lat_level is ( 156543,03392 * cos ( PI * (Lat/180) ))
+			// The map scale increases at the rate of square root of Z.
+			//
+			console.log({ lat: mid.lat });
+			let r1 = 6378.137;
+			let b = mid.lat * (Math.PI / 180); //radians
+			let r2 = 6356.752;
+			let k = Math.sqrt(
+				((r1 ** 2 * Math.cos(b)) ** 2 + (r2 ** 2 * Math.sin(b)) ** 2) /
+					((r1 * Math.cos(b)) ** 2 + (r2 * Math.sin(b)) ** 2)
+			);
+			console.log({ k });
+
+			// ceil this to get zoom level:
+			const aNum = Math.log2(
+				(156543.03392 * Math.cos((mid.lat * Math.PI) / 180)) / (distInKM / 256)
+			);
+
+			let zoooooooom = Math.round(Math.log((Ratio * k) / distInKM) / 0.6931471805599453) - 1;
+			console.log({ zoooooom: zoooooooom });
+			// return zoooooooom;
+
+			const targetPixels = 400;
+
+			for (let z = 20; z >= 1; z--) {
+				const metersPerPixel =
+					(156543.03392 * Math.cos((mid.lat * Math.PI) / 180)) / Math.pow(2, z);
+				// const diff = Math.abs(metersPerPixel - minMetersPerPixel);
+				// // if (metersPerPixel >= minMetersPerPixel) {
+				if ((distInKM * 1000) / metersPerPixel <= targetPixels) {
+					console.log({
+						newWayZ: z,
+						// minMetersPerPixel,
+						metersPerPixel,
+						distInMeters: distInKM * 1000
+						// diff: diff / metersPerPixel < 12,
+						// diffVal: { diff, metersPerPixel, ratio: diff / metersPerPixel },
+						// overage: metersPerPixel >= minMetersPerPixel
+					});
+					return z;
+				}
+			}
+
+			console.log({ aNum });
+
+			// const length = distInMeters * 1000; //Length is in Km
+			// // let k = WidthPixel * 156543.03392 * Math.cos((mid.lat * Math.PI) / 180); //k = circumference of the world at the Lat_level, for Z=0
+			// let myZoom = Math.round(Math.log((Ratio * k) / (length * 100)) / Math.LN2);
+			// myZoom -= 1; // Z starts from 0 instead of 1
+			// console.log({ myZoom });
+			//console.log("calculateZoom: width "+WidthPixel+" Ratio "+Ratio+" Lat "+Lat+" length "+Length+" (m) calculated zoom "+ myZoom);
+
+			// not used but it could be useful for some: Part of the world size at the Lat
+			// // MapDim = k /Math.pow(2,myZoom);
+			//console.log("calculateZoom: size of the map at the Lat: "+MapDim + " meters.");
+			//console.log("calculateZoom: world circumference at the Lat: " +k+ " meters.");
+			// return myZoom;
+			// return Math.ceil(aNum);
+			return 2;
+		}
+		const z = calculateZoom();
+		zoom = z;
+
+		url = `https://maps.googleapis.com/maps/api/staticmap?markers=${coordStr(start)}|${coordStr(
+			end
+		)}&center=${coordStr(mid)}&zoom=${Math.round(zoom)}&size=400x400&
+          markers=color:blue%7Clabel:S%7C11211%7C11206%7C11222&key=${KEY}`;
+
+		// function f(lat) {
+		// 	let r1 = 6378.137;
+		// 	let b = lat * (Math.PI / 180);
+		// 	let r2 = 6356.752;
+
+		// 	console.log(
+		// 		Math.sqrt(
+		// 			((r1 ** 2 * Math.cos(b)) ** 2 + (r2 ** 2 * Math.sin(b)) ** 2) /
+		// 				((r1 * Math.cos(b)) ** 2 + (r2 * Math.sin(b)) ** 2)
+		// 		)
+		// 	);
+		// }
+
+    -------------
