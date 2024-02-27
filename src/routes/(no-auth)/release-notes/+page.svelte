@@ -31,6 +31,10 @@
 				<li>
 					Zoom level of map should be as zoomed in as possible while still showing all markers
 				</li>
+				<li>
+					Zoom level can be manually set, but only zooms in on the midpoint between the start and
+					end destinations
+				</li>
 			</div>
 		</ul>
 	</div>
