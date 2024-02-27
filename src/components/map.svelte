@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Coordinate } from '$lib/types';
+	import Icon from '@iconify/svelte';
 
 	const KEY = 'AIzaSyCnOoJT9SDfNi4W-wHknlF23NtRkUleP9U';
 	export let start: Coordinate;
@@ -28,29 +29,35 @@
 	];
 	let url = '';
 
+	function manualZoom(delta: 1 | -1) {
+		zoom = Math.min(Math.max(zoom + delta, 0), 20);
+	}
+
 	let zoom = 20;
-	$: {
-		let mid = getMidpoint(start, end);
-		for (const z of zoomScale) {
-			if (distanceInMeters < z.maxDist) {
-				console.log({ z, distanceInMeters });
-				zoom = z.zoom;
-				break;
-			}
+	let mid = getMidpoint(start, end);
+	for (const z of zoomScale) {
+		if (distanceInMeters < z.maxDist) {
+			console.log({ z, distanceInMeters });
+			zoom = z.zoom;
+			break;
 		}
+	}
+
+	$: {
 		url = `https://maps.googleapis.com/maps/api/staticmap?markers=${coordStr(start)}|${coordStr(
 			end
 		)}&center=${coordStr(mid)}&zoom=${zoom}&size=400x400&
           markers=color:blue%7Clabel:S%7C11211%7C11206%7C11222&key=${KEY}`;
 	}
 
-	$: {
-		console.log({
-			start,
-			end,
-			distanceInMeters
-		});
-	}
+	// $: {
+	// 	console.log({
+	// 		start,
+	// 		end,
+	// 		distanceInMeters
+	// 	});
+	// }
+
 	function deg2rad(degrees: number) {
 		return (degrees * Math.PI) / 180;
 	}
@@ -84,6 +91,22 @@
 
 {#if start !== undefined && end !== undefined}
 	{#key url}
-		<img src={url} alt="map" class={`w-full h-full aspect-square max-w-full ${clazz}`} />
+		<div class="relative">
+			<img src={url} alt="map" class={`w-full h-full aspect-square max-w-full ${clazz}`} />
+			<div class="w-full absolute bottom-1 right-1 flex flex-row gap-3 justify-end items-center">
+				<button on:click={() => manualZoom(1)} class="zoom-btn"
+					><Icon icon="iconoir:zoom-in" /></button
+				>
+				<button on:click={() => manualZoom(-1)} class="zoom-btn"
+					><Icon icon="iconoir:zoom-out" /></button
+				>
+			</div>
+		</div>
 	{/key}
 {/if}
+
+<style lang="postcss">
+	.zoom-btn {
+		@apply block bg-white p-2 text-2xl border border-black aspect-square w-full max-w-[40px] flex-1;
+	}
+</style>
