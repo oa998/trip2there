@@ -1,5 +1,4 @@
 <script>
-	import Geolocation from '$components/geolocation.svelte';
 </script>
 
 <div class="flex flex-col gap-10 p-2">
@@ -22,7 +21,19 @@
 		</ul>
 	</div>
 
-	<Geolocation />
+	<div class="flex flex-col">
+		<div class="date">Feb 27, 2024</div>
+		<ul>
+			<header>Added $10 base chart + $1 per km</header>
+			<header>Added mapping</header>
+			<div>
+				<li>Map should show the 2 chosen locations (markers)</li>
+				<li>
+					Zoom level of map should be as zoomed in as possible while still showing all markers
+				</li>
+			</div>
+		</ul>
+	</div>
 </div>
 
 <style lang="postcss">
