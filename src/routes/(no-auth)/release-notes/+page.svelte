@@ -7,6 +7,11 @@
 				If any verification is in progress (A verification code has already been sent), that
 				verification will be cancelled.
 			</li>
+			<li>Phone verification via text message and UI input has been added</li>
+			<li>
+				If a user's phone number is already verified, they will be redirected to their profile page
+				and their phone will be marked as verified.
+			</li>
 		</ul>
 	</div>
 </div>
