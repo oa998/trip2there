@@ -35,7 +35,7 @@
 {#if !user && $isLoading}
 	<div>Loading...</div>
 {:else if !!user}
-	<div class="w-full px-5 py-5 pb-10 flex flex-col gap-10 relative">
+	<div class="w-full p-5 pb-10 flex flex-col gap-10 relative">
 		<div class="flex flex-col">
 			<div class="flex flex-row gap-2">
 				<input disabled type="text" class="text-lg w-full" value={$session.email} />
@@ -91,7 +91,7 @@
 			{:else}
 				<div class="text-xs text-right">
 					Phone number is <b>not</b> verified.
-					<a href={`${base}/signup/verify-phone`} class="underline cursor-pointer text-blue-800"
+					<a href={`${base}/profile/verify-phone`} class="underline cursor-pointer text-blue-800"
 						>Click to verify.</a
 					>
 				</div>

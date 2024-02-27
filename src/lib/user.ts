@@ -38,3 +38,34 @@ export const updatePhoneNumber = async (email: string, phoneNumber: string) => {
 		.then(throwIfNot2xx)
 		.then<User>((r) => r.json());
 };
+
+export const requestPhoneVerification = async (email: string) => {
+	return fetch(`/data/profile/ask-for-phone-verification`, {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({
+			email
+		})
+	})
+		.then(throwIfNot2xx)
+		.then<{ status: string }>((r) => r.json());
+};
+
+export const submitPhoneVerification = async (email: string, verificationNumber: string) => {
+	return fetch(`/data/profile/submit-phone-verification`, {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({
+			email,
+			verificationNumber
+		})
+	})
+		.then(throwIfNot2xx)
+		.then<{ status: string }>((r) => r.json());
+};

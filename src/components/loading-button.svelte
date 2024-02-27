@@ -8,7 +8,7 @@
 	export { clazz as class };
 </script>
 
-<button disabled={loading || disabled} {type} class={clazz}>
+<button disabled={loading || disabled} {type} class={clazz} on:click>
 	<div class="flex flex-row justify-center items-center gap-2">
 		<div>
 			<slot />
