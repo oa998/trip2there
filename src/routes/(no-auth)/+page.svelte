@@ -17,7 +17,11 @@
 		<div class="flex flex-row justify-around translate-up">
 			{#if $session.email}
 				<div class="flex flex-col gap-2">
-					<div>Logged in - <b>{$session.email}</b></div>
+					<div>
+						Logged in - <a href={`${base}/profile`} class="underline cursor-pointer"
+							>{$session.email}</a
+						>
+					</div>
 					<a href={`${base}/route`} class="button primary">Request a ride</a>
 					<button on:click={() => signout()} class="button secondary">Log Out</button>
 				</div>
