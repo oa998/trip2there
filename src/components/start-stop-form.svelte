@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { PUBLIC_RESTRICTED_KEY } from '$env/static/public';
 	import type { Coordinate } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
+
 	const dispatch = createEventDispatcher();
 	const coordinateDispatcher = createEventDispatcher<{
 		'start-coords': Coordinate;
 		'end-coords': Coordinate;
 	}>();
 
-	const KEY = 'AIzaSyCnOoJT9SDfNi4W-wHknlF23NtRkUleP9U';
+	const KEY = PUBLIC_RESTRICTED_KEY;
 	let start: string;
 	let end: string;
 

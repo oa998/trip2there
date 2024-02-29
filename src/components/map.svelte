@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { PUBLIC_RESTRICTED_KEY } from '$env/static/public';
 	import type { Coordinate } from '$lib/types';
 	import Icon from '@iconify/svelte';
-
-	const KEY = 'AIzaSyCnOoJT9SDfNi4W-wHknlF23NtRkUleP9U';
+	const KEY = PUBLIC_RESTRICTED_KEY;
 	export let start: Coordinate;
 	export let end: Coordinate;
 

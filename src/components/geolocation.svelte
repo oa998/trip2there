@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { PUBLIC_RESTRICTED_KEY } from '$env/static/public';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	let map;
@@ -77,7 +78,7 @@
 
 	onMount(() => {
 		if (browser) {
-			const KEY = 'AIzaSyCnOoJT9SDfNi4W-wHknlF23NtRkUleP9U';
+			const KEY = PUBLIC_RESTRICTED_KEY;
 			window.initMap = () => initMap($myCoords);
 			loadScript(`https://maps.googleapis.com/maps/api/js?key=${KEY}&callback=initMap`);
 		}

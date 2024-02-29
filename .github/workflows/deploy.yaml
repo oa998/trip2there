@@ -33,7 +33,7 @@ jobs:
       - name: build
         env:
           BASE_PATH: '/your-repo-name'
-          PUBLIC_SERVER_URL: ${{ vars.PUBLIC_SERVER_URL }}
+          PUBLIC_RESTRICTED_KEY: ${{ vars.PUBLIC_RESTRICTED_KEY }}
         run: |
           pnpm run build
           touch build/.nojekyll
