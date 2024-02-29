@@ -1,8 +1,10 @@
 import { goto } from '$app/navigation';
 import authLocal from '$stores/auth-local';
 import { applyToken, resetSession } from '$stores/session';
+import { writable } from 'svelte/store';
 import { peekFor401, throwIfNot2xx } from './fetch-utils';
 import { toastErrorCatch, toastMsg } from './toast';
+export const pingCompleted = writable(false);
 
 export const signin = async (email: string, password: string, jwtDuration: 1 | 7) => {
 	authLocal.set({ email, password });
@@ -74,7 +76,12 @@ export function sessionPing() {
 		.then(throwIfNot2xx)
 		.then((r) => r.text()) // token
 		.then((token) => applyToken(token))
-		.catch((e) => console.log('failed to check session', e));
+		.catch(() => {
+			/* do nothing */
+		})
+		.then(() => {
+			pingCompleted.set(true);
+		});
 }
 
 export function signup(body: { email: string; password: string; phoneNumber: string }) {

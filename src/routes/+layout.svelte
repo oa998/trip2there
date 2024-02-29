@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { sessionPing } from '$lib/auth';
 	import '@fontsource-variable/hepta-slab';
 	import '@fontsource-variable/quicksand';

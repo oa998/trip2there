@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Company from '$components/company.svelte';
-	import { signout } from '$lib/auth';
+	import { pingCompleted, signout } from '$lib/auth';
 	import { session } from '$stores/session';
 </script>
 
@@ -14,7 +14,7 @@
 		</div>
 		<img src={`${base == '/' ? '' : base}/car.webp`} alt="car" class="masked translate-up" />
 
-		<div class="flex flex-row justify-around translate-up">
+		<div class:opacity-0={!$pingCompleted} class="flex flex-row justify-around translate-up">
 			{#if $session.email}
 				<div class="flex flex-col gap-2">
 					<div>
