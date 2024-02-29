@@ -17,7 +17,7 @@
 		phoneNumber = v?.phone_number || '';
 	});
 
-	onMount(() => {
+	function loadCurrentUser() {
 		$isLoading = true;
 		getUser($session.email)
 			.then((u) => {
@@ -25,6 +25,10 @@
 			})
 			.catch(toastErrorCatch)
 			.then(() => ($isLoading = false));
+	}
+
+	onMount(() => {
+		loadCurrentUser();
 	});
 
 	$: phoneNumberValid = phoneNumber.length == 12;
@@ -77,7 +81,10 @@
 										);
 										$user = u;
 									})
-									.catch(toastErrorCatch)
+									.catch((e) => {
+										toastErrorCatch(e);
+										return loadCurrentUser();
+									})
 									.then(() => ($isLoading = false));
 							}
 						}}
