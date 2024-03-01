@@ -2,42 +2,28 @@
 	import { base } from '$app/paths';
 	import PhoneNumber from '$components/form-inputs/phone-number.svelte';
 	import PreferredName from '$components/form-inputs/preferred-name.svelte';
-	import { getUser, updatePhoneNumber, type User } from '$lib/user';
+	import { getUser, updatePhoneNumber, user } from '$lib/user';
 	import isLoading from '$stores/loading';
 	import { session } from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { toastErrorCatch, toastMsg } from './../../../lib/toast.ts';
 
 	let phoneNumber = '';
-	let preferredName = '';
 	let disablePhoneNumber = true;
-	let user = writable<User>();
 
 	user.subscribe((v) => {
 		phoneNumber = v?.phone_number || '';
-		preferredName = v?.preferred_name || '';
 	});
 
-	function loadCurrentUser() {
-		$isLoading = true;
-		getUser($session.email)
-			.then((u) => {
-				$user = u;
-			})
-			.catch(toastErrorCatch)
-			.then(() => ($isLoading = false));
-	}
-
-	onMount(() => {
-		loadCurrentUser();
+	onMount(async () => {
+		if (!$user) getUser($session.email);
 	});
 
 	$: phoneNumberValid = phoneNumber.length == 12;
 </script>
 
-<div class="text-xl pt-5 mx-5 font-anybody font-semibold font border-b border-black">Profile</div>
+<div class="text-xl pt-5 mx-5 font-anybody font-semibold font border-b-2 border-black">Profile</div>
 
 {#if !$user && $isLoading}
 	<div>Loading...</div>
@@ -52,7 +38,7 @@
 
 		<PreferredName
 			preferredName={$user.preferred_name}
-			on:preferred-name-updated={loadCurrentUser}
+			on:preferred-name-updated={() => getUser($session.email)}
 		/>
 
 		<div class="flex flex-col gap-1">
@@ -91,7 +77,7 @@
 									})
 									.catch((e) => {
 										toastErrorCatch(e);
-										return loadCurrentUser();
+										return getUser($session.email);
 									})
 									.then(() => ($isLoading = false));
 							}

@@ -1,5 +1,6 @@
 <script>
 	import { session } from '$stores/session';
+	import { user } from './../lib/user.ts';
 
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
@@ -55,7 +56,7 @@
 	<Company header class="flex-0 w-min" />
 	{#if $session.email}
 		<div class="text-xs sm:text-sm flex-shrink text-ellipsis overflow-hidden z-10">
-			{$session.email}
+			{$user?.preferred_name || $session.email}
 		</div>
 	{/if}
 </div>

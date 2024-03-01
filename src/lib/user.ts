@@ -1,3 +1,4 @@
+import { writable } from 'svelte/store';
 import { throwIfNot2xx } from './fetch-utils';
 
 export type User = {
@@ -8,6 +9,8 @@ export type User = {
 	verified_phone: 0 | 1;
 	preferred_name: string;
 };
+
+export const user = writable<User>();
 
 export const getUser = async (email: string) => {
 	return fetch(`/data/profile/get-profile`, {
@@ -21,7 +24,11 @@ export const getUser = async (email: string) => {
 		})
 	})
 		.then(throwIfNot2xx)
-		.then<User>((r) => r.json());
+		.then<User>((r) => r.json())
+		.then((u) => {
+			user.set(u);
+			return u;
+		});
 };
 
 export const updatePhoneNumber = async (email: string, phoneNumber: string) => {
