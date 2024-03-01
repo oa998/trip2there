@@ -3,7 +3,6 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Center from '$components/center.svelte';
-	import EmailVerification from '$components/email-verification.svelte';
 	import Header from '$components/header.svelte';
 	import LoadingButton from '$components/loading-button.svelte';
 	import { sessionPing, signin } from '$lib/auth.ts';
@@ -11,7 +10,6 @@
 	import isLoading from '$stores/loading';
 	import { session } from '$stores/session.ts';
 
-	let needsVerification = false;
 	let email = '';
 	let password = '';
 
@@ -46,45 +44,34 @@
 <Header />
 
 <Center>
-	{#if needsVerification}
-		<EmailVerification
-			{email}
-			{password}
-			on:log-in-again={() => {
-				password = '';
-				needsVerification = false;
-			}}
-		/>
-	{:else}
-		<form on:submit|preventDefault={handleSubmit} class:disable={$isLoading}>
-			<div class="flex flex-col">
-				<input name="email" id="email" type="text" bind:value={email} disabled={$isLoading} />
-				<label for="email">Email</label>
-			</div>
-			<div class="flex flex-col">
-				<input
-					name="password"
-					id="password"
-					type="password"
-					bind:value={password}
-					disabled={$isLoading}
-				/>
-				<label for="password">Password</label>
-			</div>
+	<form on:submit|preventDefault={handleSubmit} class:disable={$isLoading}>
+		<div class="flex flex-col">
+			<input name="email" id="email" type="text" bind:value={email} disabled={$isLoading} />
+			<label for="email">Email</label>
+		</div>
+		<div class="flex flex-col">
+			<input
+				name="password"
+				id="password"
+				type="password"
+				bind:value={password}
+				disabled={$isLoading}
+			/>
+			<label for="password">Password</label>
+		</div>
 
-			<div class="flex flex-row gap-3">
-				<input name="expired" type="checkbox" id="expired" disabled={$isLoading} />
-				<label for="expired">Stay logged in for a week</label>
-			</div>
+		<div class="flex flex-row gap-3">
+			<input name="expired" type="checkbox" id="expired" disabled={$isLoading} />
+			<label for="expired">Stay logged in for a week</label>
+		</div>
 
-			<LoadingButton
-				type="submit"
-				class="button primary self-end"
-				loading={$isLoading}
-				disabled={!email || !password}>Log In</LoadingButton
-			>
-		</form>
-	{/if}
+		<LoadingButton
+			type="submit"
+			class="button primary self-end"
+			loading={$isLoading}
+			disabled={!email || !password}>Log In</LoadingButton
+		>
+	</form>
 </Center>
 
 <style lang="postcss">

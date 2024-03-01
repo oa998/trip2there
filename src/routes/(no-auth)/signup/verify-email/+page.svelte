@@ -86,6 +86,11 @@
 						href={`${base == '/' ? '' : base}/login?email=${email}`}>here</a
 					> to go to the Log In page. Logging in will complete the process.
 				</div>
+				<div class="text-xs">
+					<span class="font-bold">Terms of Service reminder:</span> We will send emails to you as a notification
+					of service progress. Example, to let you know when your ride has been assigned or has arrived.
+					By verifying your email address, you are agreeing to recieve such notifications.
+				</div>
 			</div>
 		</div>
 	</div>
