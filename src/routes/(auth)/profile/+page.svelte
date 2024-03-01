@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import PhoneNumber from '$components/form-inputs/phone-number.svelte';
+	import PreferredName from '$components/form-inputs/preferred-name.svelte';
 	import { getUser, updatePhoneNumber, type User } from '$lib/user';
 	import isLoading from '$stores/loading';
 	import { session } from '$stores/session';
@@ -10,11 +11,13 @@
 	import { toastErrorCatch, toastMsg } from './../../../lib/toast.ts';
 
 	let phoneNumber = '';
+	let preferredName = '';
 	let disablePhoneNumber = true;
 	let user = writable<User>();
 
 	user.subscribe((v) => {
 		phoneNumber = v?.phone_number || '';
+		preferredName = v?.preferred_name || '';
 	});
 
 	function loadCurrentUser() {
@@ -36,9 +39,9 @@
 
 <div class="text-xl pt-5 mx-5 font-anybody font-semibold font border-b border-black">Profile</div>
 
-{#if !user && $isLoading}
+{#if !$user && $isLoading}
 	<div>Loading...</div>
-{:else if !!user}
+{:else if !!$user}
 	<div class="w-full p-5 pb-10 flex flex-col gap-10 relative">
 		<div class="flex flex-col">
 			<div class="flex flex-row gap-2">
@@ -46,6 +49,11 @@
 			</div>
 			<span class="text-xs text-black">email</span>
 		</div>
+
+		<PreferredName
+			preferredName={$user.preferred_name}
+			on:preferred-name-updated={loadCurrentUser}
+		/>
 
 		<div class="flex flex-col gap-1">
 			<div class="flex flex-row gap-2 items-start">

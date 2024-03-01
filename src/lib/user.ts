@@ -6,6 +6,7 @@ export type User = {
 	phone_number: string;
 	verified_email: 0 | 1;
 	verified_phone: 0 | 1;
+	preferred_name: string;
 };
 
 export const getUser = async (email: string) => {
@@ -33,6 +34,22 @@ export const updatePhoneNumber = async (email: string, phoneNumber: string) => {
 		body: JSON.stringify({
 			email,
 			phoneNumber
+		})
+	})
+		.then(throwIfNot2xx)
+		.then<User>((r) => r.json());
+};
+
+export const updatePreferredName = async (email: string, preferredName: string) => {
+	return fetch(`/data/profile/set-preferred-name`, {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({
+			email,
+			preferredName
 		})
 	})
 		.then(throwIfNot2xx)
