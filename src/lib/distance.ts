@@ -1,3 +1,4 @@
+import { browser } from '$app/environment';
 import { base } from '$app/paths';
 export interface DistElement {
 	distance: Distance;
@@ -56,3 +57,51 @@ export async function dist(start: string, end: string): Promise<DistElement[]> {
     }
   */
 }
+
+export const getMyAddress = () => {
+	if (browser) {
+		if (navigator?.geolocation) {
+			const options = {
+				enableHighAccuracy: true,
+				timeout: 5000,
+				maximumAge: 0
+			};
+
+			return new Promise((ack, nack) => {
+				function success(pos) {
+					const crd = pos.coords;
+					console.log('Your current position is:');
+					console.log(`Latitude : ${crd.latitude}`);
+					console.log(`Longitude: ${crd.longitude}`);
+					console.log(`More or less ${crd.accuracy} meters.`);
+					const latlng = { lat: crd.latitude, lng: crd.longitude };
+
+					fetch('/data/gcp-apis/get-my-address', {
+						method: 'POST',
+						headers: {
+							'content-type': 'application/json'
+						},
+						body: JSON.stringify(latlng)
+					}).then(async (r) => {
+						if (r.status == 200) {
+							const addressAry = await r.json();
+							ack({
+								latlng,
+								addressAry
+							});
+						} else {
+							const t = await r.text();
+							nack(t);
+						}
+					});
+				}
+
+				function error(e) {
+					console.log(e, String(e));
+					nack('Could not get coordinates');
+				}
+				navigator.geolocation.getCurrentPosition(success, error, options);
+			});
+		}
+	}
+};

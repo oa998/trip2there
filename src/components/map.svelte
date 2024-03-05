@@ -11,8 +11,6 @@
 
 	export let distanceInMeters: number;
 
-	$: console.log({ distanceInMeters });
-
 	const zoomScale = [
 		// distance in M (not kM): zoom level
 		{ maxDist: 200, zoom: 14 }, // walmart -> service station
@@ -34,16 +32,15 @@
 	}
 
 	let zoom = 20;
-	let mid = getMidpoint(start, end);
-	for (const z of zoomScale) {
-		if (distanceInMeters < z.maxDist) {
-			console.log({ z, distanceInMeters });
-			zoom = z.zoom;
-			break;
-		}
-	}
-
 	$: {
+		let mid = getMidpoint(start, end);
+		for (const z of zoomScale) {
+			if (distanceInMeters < z.maxDist) {
+				console.log({ z, distanceInMeters });
+				zoom = z.zoom;
+				break;
+			}
+		}
 		url = `https://maps.googleapis.com/maps/api/staticmap?markers=${coordStr(start)}|${coordStr(
 			end
 		)}&center=${coordStr(mid)}&zoom=${zoom}&size=400x400&

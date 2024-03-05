@@ -22,6 +22,15 @@
 			icon: 'clarity:car-line',
 			action: () => goto(`${base}/route`)
 		},
+		...[
+			$session.orgsAndRoles.every((o) => o.role_name !== 'ADMIN')
+				? undefined
+				: {
+						text: 'Admin',
+						class: 'bg-red-700 border border-slate-200',
+						action: () => goto(`${base}/admin`)
+				  }
+		].filter((t) => t),
 		{
 			text: 'Log out',
 			class: 'bg-slate-900 border border-slate-200',

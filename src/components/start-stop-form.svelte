@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { PUBLIC_RESTRICTED_KEY } from '$env/static/public';
+	import { getMyAddress } from '$lib/distance';
 	import type { Coordinate } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
@@ -15,6 +16,8 @@
 	let start: string;
 	let end: string;
 
+	let currentLocationLoading = false;
+
 	$: if (start && end) {
 		dispatch('route-selected', { ready: true, start, end });
 	} else {
@@ -24,7 +27,6 @@
 	function initPlaces() {
 		const startInput = document.getElementById('start-location');
 		const endInput = document.getElementById('end-location');
-
 		const options = {
 			fields: ['formatted_address', 'geometry', 'name'],
 			strictBounds: false
@@ -89,8 +91,26 @@
 
 <div class="w-full h-full">
 	<div>
-		<label for="start-location">Start Location:</label>
-
+		<div class="flex flex-row justify-between">
+			<label for="start-location">Start Location:</label>
+			{#if currentLocationLoading}
+				<Icon icon="line-md:loading-loop" style="font-size:small" />
+			{:else}
+				<button
+					class="underline flex flex-row"
+					on:click={async () => {
+						currentLocationLoading = true;
+						const { latlng, addressAry } = await getMyAddress();
+						start = addressAry[0];
+						document.getElementById('start-location').value = start;
+						dispatch('start-address-found', addressAry[0]);
+						coordinateDispatcher('start-coords', latlng);
+						currentLocationLoading = false;
+					}}
+					><span>Use current address</span>
+				</button>
+			{/if}
+		</div>
 		<div class="input-flex">
 			<input
 				on:focus={(e) => {
@@ -111,6 +131,7 @@
 			{/if}
 		</div>
 	</div>
+
 	<div>
 		<label for="end-location">End Location:</label>
 		<div class="input-flex">

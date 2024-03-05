@@ -2,7 +2,7 @@
 	import Map from '$components/map.svelte';
 	import StartStopForm from '$components/start-stop-form.svelte';
 
-	import { dist } from '$lib/distance';
+	import { dist, type DistElement } from '$lib/distance';
 	import { toastErrorCatch } from '$lib/toast';
 	import isLoading from '$stores/loading';
 	import Icon from '@iconify/svelte';
