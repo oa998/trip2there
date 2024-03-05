@@ -12,8 +12,6 @@ export type User = {
 
 export const user = writable<User>();
 
-user.subscribe((v) => console.log({ user: v }));
-
 export const getUser = async (email: string) => {
 	return fetch(`/data/profile/get-profile`, {
 		method: 'POST',

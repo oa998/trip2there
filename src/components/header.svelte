@@ -9,7 +9,7 @@
 	import Company from './company.svelte';
 	import Menu from './menu.svelte';
 
-	const loggedInNav = [
+	$: loggedInNav = [
 		{
 			text: 'Profile',
 			class: 'bg-slate-900 border border-slate-500',
