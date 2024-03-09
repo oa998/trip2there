@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { PUBLIC_RESTRICTED_KEY } from '$env/static/public';
-	import { getMyAddress } from '$lib/distance';
 	import type { Coordinate } from '$lib/types';
+	import currentLocation from '$stores/current-location';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
+	import GetCurrentLocation from './get-current-location.svelte';
 
 	const dispatch = createEventDispatcher();
 	const coordinateDispatcher = createEventDispatcher<{
@@ -15,8 +16,6 @@
 	const KEY = PUBLIC_RESTRICTED_KEY;
 	let start: string;
 	let end: string;
-
-	let currentLocationLoading = false;
 
 	$: if (start && end) {
 		dispatch('route-selected', { ready: true, start, end });
@@ -93,23 +92,12 @@
 	<div>
 		<div class="flex flex-row justify-between">
 			<label for="start-location">Start Location:</label>
-			{#if currentLocationLoading}
-				<Icon icon="line-md:loading-loop" style="font-size:small" />
-			{:else}
-				<button
-					class="underline flex flex-row"
-					on:click={async () => {
-						currentLocationLoading = true;
-						const { latlng, addressAry } = await getMyAddress();
-						start = addressAry[0];
-						document.getElementById('start-location').value = start;
-						dispatch('start-address-found', addressAry[0]);
-						coordinateDispatcher('start-coords', latlng);
-						currentLocationLoading = false;
-					}}
-					><span>Use current address</span>
-				</button>
-			{/if}
+			<GetCurrentLocation
+				on:click={() => {
+					document.getElementById('start-location').value = $currentLocation.address;
+					dispatch('start-address-found', $currentLocation.address);
+				}}
+			/>
 		</div>
 		<div class="input-flex">
 			<input

@@ -11,7 +11,8 @@
 	});
 </script>
 
-<div class="w-full h-full grid place-items-center relative">
+<!-- do not make this h-full, won't work on safari -->
+<div class="w-full h-[100vh] grid place-items-center relative">
 	<div class="w-full h-full max-h-full min-w-[400px] relative not-a-touchscreen">
 		<slot />
 	</div>
