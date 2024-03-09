@@ -30,8 +30,6 @@
 	function whichBrowser() {
 		if (isFirefox()) {
 			return 'Firefox';
-		} else if (isIE()) {
-			return 'Internet Explorer';
 		} else if (isChrome()) {
 			return 'Chrome';
 		} else if (isSafari()) {
@@ -123,6 +121,13 @@
 			</div>
 			<img alt="settings" src={`${base}/safari-open-settings.png`} />
 			<img alt="enable" src={`${base}/safari-enable-location.png`} />
+		</div>
+	{/if}
+
+	{#if browser == 'Unknown'}
+		<div class="text-xs text-center">
+			We only officially support Chrome, Safari, and Firefox browsers. You may not be able to use
+			this app from this browser.
 		</div>
 	{/if}
 </div>

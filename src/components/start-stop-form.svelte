@@ -23,6 +23,12 @@
 		dispatch('route-selected', { ready: false, start, end });
 	}
 
+	function setStartLocation(address: string, coords: Coordinate) {
+		start = address;
+		dispatch('start-address-found', address);
+		coordinateDispatcher('start-coords', coords);
+	}
+
 	function initPlaces() {
 		const startInput = document.getElementById('start-location');
 		const endInput = document.getElementById('end-location');
@@ -41,10 +47,7 @@
 				window.alert("No details available for input: '" + place.name + "'");
 				return;
 			}
-			console.log('start addess selected: ', place.formatted_address, place);
-			start = place.formatted_address;
-			dispatch('start-address-found', place.formatted_address);
-			coordinateDispatcher('start-coords', {
+			setStartLocation(place.formatted_address, {
 				lat: place.geometry.location.lat(),
 				lng: place.geometry.location.lng()
 			});
@@ -95,7 +98,7 @@
 			<GetCurrentLocation
 				on:click={() => {
 					document.getElementById('start-location').value = $currentLocation.address;
-					dispatch('start-address-found', $currentLocation.address);
+					setStartLocation($currentLocation.address, $currentLocation);
 				}}
 			/>
 		</div>
