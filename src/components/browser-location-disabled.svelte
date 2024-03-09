@@ -47,14 +47,38 @@
 </script>
 
 <div class="w-full grid place-items-center relative pb-20 gap-5 p-3">
-	<h1 class="font-anybody font-bold w-full border-b-2 border-black">Enable Location Services</h1>
+	<h1 class="font-anybody font-semibold text-xl w-full border-b-2 border-black">
+		Enable Location Services
+	</h1>
 	<div class="text-center p-5">
 		Sorry, but your browser's <b>location services</b> are disabled. Please enable them to allow us to
 		best navigate to you and provide status updates from your driver.
 	</div>
 
 	{#if browser == 'Chrome'}
-		<img alt="enable" src={`${base}/chrome-location-enable.png`} />
+		<div class="flex flex-col gap-3 p-5 items-center bg-slate-300">
+			<div class="text-center text-sm pb-2 px-10">
+				When loading the page, you may be shown this dialog. Choose "Allow".
+			</div>
+			<img alt="load" src={`${base}/firefox-allow-location.png`} />
+		</div>
+		<div class="flex flex-col gap-3 p-5 items-center bg-blue-300">
+			<div>
+				<div class="text-center text-sm pb-2 px-10">
+					If you have already disabled it in the past, you can re-enable it:
+				</div>
+				<ol class="text-xs list-decimal text-left pl-10">
+					<li>Open the menu left of your URL</li>
+					<li>Open the <span class="font-bold">Permissions</span> menu</li>
+					<li>Set the <span class="font-bold">Locations</span> option to "Allowed"</li>
+					<li>Reload the page</li>
+				</ol>
+			</div>
+			<img alt="settings" src={`${base}/chrome-settings-url.png`} />
+			<img alt="settings" src={`${base}/chrome-settings-open.png`} />
+			<img alt="settings" src={`${base}/chrome-location-blocked.png`} />
+			<img alt="settings" src={`${base}/chrome-location-allowed.png`} />
+		</div>
 	{/if}
 
 	{#if browser == 'Firefox'}
