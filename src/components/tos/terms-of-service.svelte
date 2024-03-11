@@ -323,6 +323,7 @@
 		>
 			{#if value}
 				<Icon icon="lets-icons:check-fill" class="text-2xl" color="blue" />
+				<Icon icon="ic:outline-circle" class="text-2xl hidden" color="black" />
 			{:else}
 				<Icon icon="ic:outline-circle" class="text-2xl" color="black" />
 			{/if}
